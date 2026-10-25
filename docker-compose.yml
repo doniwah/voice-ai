@@ -1,0 +1,40 @@
+services:
+  # --------------------------------------------------------------------------
+  # 1. PostgreSQL 16 — Relational Database (Clinical Records, Audit Trail, SOAPI)
+  # --------------------------------------------------------------------------
+  postgres:
+    image: postgres:16-alpine
+    container_name: soapi-postgres
+    restart: always
+    environment:
+      POSTGRES_USER: soapi_user
+      POSTGRES_PASSWORD: soapi_secret
+      POSTGRES_DB: soapi_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./src/server/db/schema.sql:/docker-entrypoint-initdb.d/01_schema.sql:ro
+      - ./src/server/db/seed.sql:/docker-entrypoint-initdb.d/02_seed.sql:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U soapi_user -d soapi_db"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  # --------------------------------------------------------------------------
+  # 2. S3 Object Storage — Medical Voice Recordings
+  # 100% Open, Public, Zero License Required, Pre-seeded Bucket
+  # --------------------------------------------------------------------------
+  s3:
+    image: adobe/s3mock:latest
+    container_name: soapi-s3
+    restart: always
+    environment:
+      - initialBuckets=soapi-audio-recordings
+    ports:
+      - "9000:9090" # S3 API endpoint on http://localhost:9000
+
+volumes:
+  postgres_data:
+    driver: local

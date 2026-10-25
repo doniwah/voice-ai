@@ -1,0 +1,139 @@
+@import "tailwindcss" source(none);
+@source "../src";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+/*
+ * SOAPI design system.
+ * Dark navy sidebar, teal primary, cool light-gray workspace.
+ * All colors in oklch, registered in @theme inline.
+ */
+
+@theme inline {
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --radius-2xl: calc(var(--radius) + 8px);
+  --radius-3xl: calc(var(--radius) + 12px);
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+
+  /* SOAPI custom tokens */
+  --color-navy: var(--navy);
+  --color-navy-soft: var(--navy-soft);
+  --color-navy-foreground: var(--navy-foreground);
+  --color-teal-soft: var(--teal-soft);
+  --color-teal-text: var(--teal-text);
+  --color-warn-soft: var(--warn-soft);
+  --color-warn-text: var(--warn-text);
+  --color-ok-soft: var(--ok-soft);
+  --color-ok-text: var(--ok-text);
+  --color-info-soft: var(--info-soft);
+  --color-info-text: var(--info-text);
+  --color-draft-soft: var(--draft-soft);
+  --color-draft-text: var(--draft-text);
+  --color-chart-bar: var(--chart-bar);
+  --color-chart-bar-active: var(--chart-bar-active);
+
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Plus Jakarta Sans", "Inter", ui-sans-serif, sans-serif;
+}
+
+:root {
+  --radius: 0.75rem;
+  --background: oklch(0.973 0.006 246);
+  --foreground: oklch(0.27 0.045 253);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.27 0.045 253);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.27 0.045 253);
+  --primary: oklch(0.51 0.088 194);
+  --primary-foreground: oklch(0.99 0.002 200);
+  --secondary: oklch(0.955 0.006 246);
+  --secondary-foreground: oklch(0.27 0.045 253);
+  --muted: oklch(0.955 0.006 246);
+  --muted-foreground: oklch(0.52 0.028 251);
+  --accent: oklch(0.955 0.006 246);
+  --accent-foreground: oklch(0.27 0.045 253);
+  --destructive: oklch(0.577 0.245 27.325);
+  --destructive-foreground: oklch(0.99 0.002 200);
+  --border: oklch(0.917 0.008 250);
+  --input: oklch(0.917 0.008 250);
+  --ring: oklch(0.6 0.07 195);
+
+  /* SOAPI */
+  --navy: oklch(0.225 0.04 256);
+  --navy-soft: oklch(0.28 0.04 256);
+  --navy-foreground: oklch(0.86 0.02 240);
+  --teal-soft: oklch(0.93 0.045 195);
+  --teal-text: oklch(0.48 0.09 195);
+  --warn-soft: oklch(0.94 0.06 85);
+  --warn-text: oklch(0.5 0.11 70);
+  --ok-soft: oklch(0.93 0.055 158);
+  --ok-text: oklch(0.44 0.1 158);
+  --info-soft: oklch(0.93 0.03 220);
+  --info-text: oklch(0.5 0.08 230);
+  --draft-soft: oklch(0.94 0.005 250);
+  --draft-text: oklch(0.56 0.02 250);
+  --chart-bar: oklch(0.885 0.03 195);
+  --chart-bar-active: oklch(0.55 0.1 195);
+}
+
+.dark {
+  --background: oklch(0.18 0.03 255);
+  --foreground: oklch(0.93 0.01 240);
+  --card: oklch(0.22 0.035 255);
+  --card-foreground: oklch(0.93 0.01 240);
+  --popover: oklch(0.22 0.035 255);
+  --popover-foreground: oklch(0.93 0.01 240);
+  --primary: oklch(0.6 0.09 195);
+  --primary-foreground: oklch(0.15 0.03 255);
+  --secondary: oklch(0.28 0.04 255);
+  --secondary-foreground: oklch(0.93 0.01 240);
+  --muted: oklch(0.28 0.04 255);
+  --muted-foreground: oklch(0.68 0.02 245);
+  --accent: oklch(0.28 0.04 255);
+  --accent-foreground: oklch(0.93 0.01 240);
+  --destructive: oklch(0.704 0.191 22.216);
+  --destructive-foreground: oklch(0.93 0.01 240);
+  --border: oklch(1 0 0 / 10%);
+  --input: oklch(1 0 0 / 15%);
+  --ring: oklch(0.55 0.06 200);
+}
+
+@layer base {
+  * {
+    border-color: var(--color-border);
+  }
+
+  body {
+    background-color: var(--color-background);
+    color: var(--color-foreground);
+    font-family: var(--font-sans);
+  }
+
+  h1,
+  h2,
+  h3 {
+    font-family: var(--font-display);
+  }
+}
