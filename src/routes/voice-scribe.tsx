@@ -19,6 +19,7 @@ import { PageHeader } from "@/components/page-header";
 import { patients as fallbackPatients, type Patient } from "@/lib/demo-data";
 import { cn } from "@/lib/utils";
 import { toast } from "sonner";
+import { SOAPICDAssistant } from "@/components/soap-icd-assistant";
 import {
   Dialog,
   DialogContent,
@@ -172,6 +173,8 @@ function VoiceScribe() {
   const [selectedPatientId, setSelectedPatientId] = useState<string>(fallbackPatients[0]?.id ?? "1");
   const [isChangePatientOpen, setIsChangePatientOpen] = useState(false);
   const [patientSearch, setPatientSearch] = useState("");
+  const [activeView, setActiveView] = useState<"scribe" | "fastapi_assistant">("scribe");
+  const [carriedTranscript, setCarriedTranscript] = useState<string>("");
 
   const [isRecording, setIsRecording] = useState(false);
   const [isProcessingAI, setIsProcessingAI] = useState(false);
@@ -636,8 +639,63 @@ function VoiceScribe() {
           </div>
         </div>
 
-        {/* Main Content: 2-Columns */}
-        <div className="grid gap-6 lg:grid-cols-12">
+        {/* View Mode Tabs: Voice Scribe vs FastAPI AI Hub */}
+        <div className="flex flex-wrap items-center justify-between gap-3 border-b border-border pb-3">
+          <div className="flex items-center gap-2">
+            <button
+              type="button"
+              onClick={() => setActiveView("scribe")}
+              className={cn(
+                "inline-flex items-center gap-2 rounded-xl px-4 py-2 text-xs font-bold transition-all cursor-pointer",
+                activeView === "scribe"
+                  ? "bg-[#0D6E68] text-white shadow-xs"
+                  : "bg-muted text-muted-foreground hover:bg-muted/80 hover:text-foreground",
+              )}
+            >
+              <Mic className="h-4 w-4" />
+              <span>Voice Scribe</span>
+            </button>
+
+            <button
+              type="button"
+              onClick={() => setActiveView("fastapi_assistant")}
+              className={cn(
+                "inline-flex items-center gap-2 rounded-xl px-4 py-2 text-xs font-bold transition-all cursor-pointer",
+                activeView === "fastapi_assistant"
+                  ? "bg-[#0D6E68] text-white shadow-xs"
+                  : "bg-muted text-muted-foreground hover:bg-muted/80 hover:text-foreground",
+              )}
+            >
+              <Sparkles className="h-4 w-4" />
+              <span>AI SOAP &amp; Rekomendasi ICD-10</span>
+            </button>
+          </div>
+
+          {activeView === "scribe" && transcriptLines.length > 0 && (
+            <button
+              type="button"
+              onClick={() => {
+                const formatted = transcriptLines
+                  .map((t) => `${t.speaker}: "${t.text}"`)
+                  .join("\n");
+                setCarriedTranscript(formatted);
+                setActiveView("fastapi_assistant");
+                toast.info("Transkrip percakapan dimuat ke AI Assistant!");
+              }}
+              className="inline-flex items-center gap-1.5 rounded-xl border border-[#0D6E68] bg-[#E5F5F3] px-3.5 py-1.5 text-xs font-bold text-[#0D6E68] hover:bg-[#d6f0ec] transition-colors cursor-pointer"
+            >
+              <Sparkles className="h-3.5 w-3.5" />
+              <span>Kirim Transkrip ke AI Assistant</span>
+            </button>
+          )}
+        </div>
+
+        {/* Conditional Content based on activeView */}
+        {activeView === "fastapi_assistant" ? (
+          <SOAPICDAssistant initialTranscript={carriedTranscript} />
+        ) : (
+          /* Main Content: 2-Columns */
+          <div className="grid gap-6 lg:grid-cols-12">
           {/* Left Column: Rekaman Konsultasi & Transkrip Langsung */}
           <div className="rounded-2xl border border-border bg-card p-5 sm:p-6 lg:col-span-8 flex flex-col justify-between shadow-xs">
             <div>
@@ -798,21 +856,6 @@ function VoiceScribe() {
                     <p className="text-[11px] font-bold uppercase tracking-[0.14em] text-muted-foreground">
                       TRANSKRIP LANGSUNG
                     </p>
-                    <span className="inline-flex items-center gap-1 rounded-full bg-emerald-500/10 px-2 py-0.5 text-[10px] font-semibold text-emerald-700">
-                      <span className="h-1.5 w-1.5 rounded-full bg-emerald-600 animate-pulse" />
-                      Live STT (id-ID)
-                    </span>
-                  </div>
-
-                  {/* AI Auto-Diarization Badge (No manual button clicking!) */}
-                  <div className="flex items-center gap-1.5">
-                    <span className="inline-flex items-center gap-1.5 rounded-full bg-[#E5F5F3] border border-[#0E706B]/20 px-3 py-1 text-xs font-semibold text-[#0E706B]">
-                      <Sparkles className="h-3.5 w-3.5 text-[#0E706B]" />
-                      AI Auto-Diarization Aktif
-                    </span>
-                    <span className="hidden md:inline text-[11px] text-muted-foreground">
-                      (Dokter &amp; Pasien terdeteksi otomatis)
-                    </span>
                   </div>
                 </div>
 
@@ -825,16 +868,6 @@ function VoiceScribe() {
                     <p className="mt-1 text-[11px] text-muted-foreground/70">
                       AI otomatis memilah siapa yang berbicara tanpa perlu memencet tombol ganti pembicara.
                     </p>
-                    {!isRecording && (
-                      <button
-                        type="button"
-                        onClick={loadDemoTranscript}
-                        className="mt-3 inline-flex items-center gap-1 text-[11px] font-semibold text-teal-text hover:underline cursor-pointer"
-                      >
-                        <Sparkles className="h-3 w-3" />
-                        Atau muat contoh transkrip simulasi
-                      </button>
-                    )}
                   </div>
                 ) : (
                   <div className="space-y-2.5 pt-2 max-h-[300px] overflow-y-auto pr-1">
@@ -1066,6 +1099,7 @@ function VoiceScribe() {
             </div>
           </div>
         </div>
+        )}
 
         {/* Modal: Ganti Pasien */}
         <Dialog open={isChangePatientOpen} onOpenChange={setIsChangePatientOpen}>

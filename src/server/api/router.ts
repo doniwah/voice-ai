@@ -464,6 +464,52 @@ export async function handleApiRequest(request: Request): Promise<Response | nul
       return jsonResponse({ success, message: "Kirim ulang ke SIMRS berhasil!" });
     }
 
+    // 9. Generate SOAP via FastAPI backend (Prompt Engineering)
+    if (path === "/api/generate-soap" && method === "POST") {
+      const body = await request.json();
+      const fastapiUrl = process.env.FASTAPI_URL || "http://127.0.0.1:8000";
+      try {
+        const resp = await fetch(`${fastapiUrl}/generate-soap`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(body),
+        });
+        const data = await resp.json();
+        return jsonResponse(data, resp.status);
+      } catch (err: any) {
+        return jsonResponse(
+          {
+            success: false,
+            error: `Gagal menghubungi backend FastAPI di ${fastapiUrl}: ${err?.message || err}. Pastikan uvicorn backend.main:app berjalan di port 8000.`,
+          },
+          503,
+        );
+      }
+    }
+
+    // 10. Recommend ICD via FastAPI backend (RAG Sederhana)
+    if (path === "/api/recommend-icd" && method === "POST") {
+      const body = await request.json();
+      const fastapiUrl = process.env.FASTAPI_URL || "http://127.0.0.1:8000";
+      try {
+        const resp = await fetch(`${fastapiUrl}/recommend-icd`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(body),
+        });
+        const data = await resp.json();
+        return jsonResponse(data, resp.status);
+      } catch (err: any) {
+        return jsonResponse(
+          {
+            success: false,
+            error: `Gagal menghubungi backend FastAPI di ${fastapiUrl}: ${err?.message || err}. Pastikan uvicorn backend.main:app berjalan di port 8000.`,
+          },
+          503,
+        );
+      }
+    }
+
     return null; // Not an API route handled by this router
   } catch (error: unknown) {
     console.error("❌ API Router Error:", error);
