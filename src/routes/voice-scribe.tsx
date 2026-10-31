@@ -829,7 +829,7 @@ function VoiceScribe() {
                     ) : (
                       <>
                         <Mic className="h-4 w-4" />
-                        Mulai Rekam (1x Klik)
+                        Mulai Rekam
                       </>
                     )}
                   </button>

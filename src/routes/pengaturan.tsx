@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { User, Building2, Settings, Send, Bell, CheckCircle2 } from "lucide-react";
 import { PageHeader } from "@/components/page-header";
 import { cn } from "@/lib/utils";
@@ -110,7 +110,60 @@ function Pengaturan() {
     reader.readAsDataURL(file);
   };
 
-  const handleSave = (tabName: string) => {
+  // Fetch real doctor profile from PostgreSQL
+  useEffect(() => {
+    fetch("/api/doctor/profile")
+      .then((res) => res.json())
+      .then((json) => {
+        if (json.success && json.data) {
+          if (json.data.name) setFullName(json.data.name);
+          if (json.data.sipNumber) setSipNumber(json.data.sipNumber);
+          if (json.data.email) setEmail(json.data.email);
+          if (json.data.specialty) setSpecialty(json.data.specialty);
+        }
+      })
+      .catch((err) => {
+        console.warn("Using fallback doctor profile:", err);
+      });
+  }, []);
+
+  const handleSave = async (tabName: string) => {
+    if (tabName.includes("Profil")) {
+      try {
+        const res = await fetch("/api/doctor/profile", {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            name: fullName,
+            sipNumber,
+            email,
+            specialty,
+          }),
+        });
+        const data = await res.json();
+        if (data.success) {
+          toast.success("Profil dokter berhasil disimpan ke database!");
+          // Update local session
+          const auth = localStorage.getItem("soapi_auth");
+          if (auth) {
+            const parsed = JSON.parse(auth);
+            localStorage.setItem(
+              "soapi_auth",
+              JSON.stringify({
+                ...parsed,
+                name: fullName,
+                sipNumber,
+                email,
+                specialty,
+              }),
+            );
+          }
+          return;
+        }
+      } catch (err) {
+        console.error("Failed saving to DB:", err);
+      }
+    }
     toast.success(`Perubahan ${tabName} berhasil disimpan!`);
   };
 

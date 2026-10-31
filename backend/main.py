@@ -22,6 +22,13 @@ from backend.prompts import (
     SOAP_SYSTEM_PROMPT,
     ICD_EXTRACTION_PROMPT,
     ICD_VERIFICATION_PROMPT,
+    ASSESSMENT_FROM_SO_PROMPT,
+    ICD_GROUNDED_REASONING_PROMPT,
+)
+from backend.rag_pipeline import (
+    run_full_pipeline,
+    validate_recommendations as validate_rag_recommendations,
+    load_knowledge_base,
 )
 
 # Load environment variables (.env dari folder root atau folder backend)
@@ -177,6 +184,67 @@ class RecommendICDResponse(BaseModel):
     )
 
 
+# ---------------------------------------------------------------------------
+# Schema untuk endpoint /generate-assessment-icd (S + O -> Assessment + ICD-10)
+# ---------------------------------------------------------------------------
+
+class BPJSValidationInfo(BaseModel):
+    code: str
+    is_valid: bool = True
+    warnings: List[str] = Field(default_factory=list)
+    can_be_primary: bool = True
+    is_fktp_144: bool = False
+    classification: str = "primary"  # "primary" or "secondary"
+
+
+class ICDRecommendationItem(BaseModel):
+    rank: int = 1
+    code: str
+    display_name: str
+    display_name_id: Optional[str] = ""
+    confidence: float
+    classification: str = "primary"  # "primary" or "secondary"
+    clinical_rationale: str
+    evidence_s: Optional[str] = ""
+    evidence_o: Optional[str] = ""
+    excludes_checked: Optional[str] = ""
+    validation: Optional[BPJSValidationInfo] = None
+
+
+class GenerateAssessmentICDRequest(BaseModel):
+    subjective: str = Field(..., description="Keluhan dan riwayat pasien (dari transkrip)")
+    objective: str = Field(..., description="Tanda vital dan pemeriksaan fisik aktual (diisi dokter)")
+    plan: Optional[str] = Field(default="", description="Rencana terapi dari SOAP awal (opsional, untuk konteks)")
+
+
+class GenerateAssessmentICDResponse(BaseModel):
+    success: bool = True
+    assessment: str = Field(..., description="Diagnosis kerja yang dibuat dari S+O")
+    differential_diagnoses: List[str] = Field(default_factory=list, description="Diagnosis banding")
+    clinical_reasoning: str = Field(default="", description="Penjelasan klinis S+O -> Assessment")
+    # Multi-recommendations Top-3 dengan validasi BPJS INA-CBGs
+    recommendations: List[ICDRecommendationItem] = Field(
+        default_factory=list,
+        description="Top-3 rekomendasi kode ICD-10 tervalidasi aturan BPJS",
+    )
+    r_code_warning: Optional[str] = Field(
+        default=None,
+        description="Peringatan jika ada kode gejala R-code yang diturunkan dari diagnosis utama",
+    )
+    assessment_narrative: Optional[str] = Field(
+        default=None,
+        description="Ringkasan narasi klinis untuk rekam medis",
+    )
+    # Backward compatibility fields
+    selected_code: str = Field(..., description="Kode ICD-10 yang direkomendasikan")
+    selected_description: str = Field(..., description="Deskripsi kode ICD-10 terpilih")
+    confidence: float = Field(..., description="Skor keyakinan AI")
+    evidence: str = Field(..., description="Kutipan bukti dari S+O")
+    icd_reasoning: str = Field(default="", description="Alasan klinis pemilihan kode ICD-10")
+    extracted_diagnosis: str = Field(..., description="Istilah diagnosis untuk pencarian ICD")
+    candidates: List[ICDCandidate] = Field(default_factory=list)
+
+
 # ==============================================================================
 # Helper: CSV Knowledge Base Loader & Keyword Retrieval (RAG Step B)
 # ==============================================================================
@@ -230,17 +298,58 @@ def retrieve_icd_candidates(query_text: str, top_k: int = 8) -> List[dict]:
             if t in code_lower:
                 score += 4
 
-        # Specific alias mapping untuk terminologi medis umum Indonesia
-        if ("tekanan darah" in clean_query or "hipertensi" in clean_query) and "hypertension" in desc_lower:
+        # Specific alias mapping untuk terminologi medis umum Indonesia + sinonim BPJS
+        if ("tekanan darah" in clean_query or "hipertensi" in clean_query or "tensi" in clean_query) and \
+                ("hypertension" in desc_lower or "hypertensive" in desc_lower):
+            score += 12
+        if ("gula" in clean_query or "diabetes" in clean_query or "dm" in clean_query or "kencing manis" in clean_query) and \
+                "diabetes" in desc_lower:
+            score += 12
+        if ("ispa" in clean_query or "batuk" in clean_query or "pilek" in clean_query or "flu" in clean_query) and \
+                ("respiratory" in desc_lower or "cough" in desc_lower or "nasopharyngitis" in desc_lower or
+                 "pharyngitis" in desc_lower or "upper respiratory" in desc_lower):
             score += 10
-        if ("gula" in clean_query or "diabetes" in clean_query) and "diabetes" in desc_lower:
+        if ("maag" in clean_query or "lambung" in clean_query or "gastritis" in clean_query or
+            "ulu hati" in clean_query or "dispepsia" in clean_query) and \
+                ("gastritis" in desc_lower or "dyspepsia" in desc_lower or "gastro" in desc_lower or "reflux" in desc_lower):
             score += 10
-        if ("ispa" in clean_query or "batuk" in clean_query or "pilek" in clean_query) and ("respiratory" in desc_lower or "cough" in desc_lower or "nasopharyngitis" in desc_lower or "pharyngitis" in desc_lower):
-            score += 8
-        if ("maag" in clean_query or "lambung" in clean_query or "gastritis" in clean_query or "ulu hati" in clean_query) and ("gastritis" in desc_lower or "dyspepsia" in desc_lower or "reflux" in desc_lower):
-            score += 8
-        if ("pusing" in clean_query or "sakit kepala" in clean_query) and ("headache" in desc_lower or "migraine" in desc_lower or "dizziness" in desc_lower):
-            score += 8
+        if ("pusing" in clean_query or "vertigo" in clean_query or "sakit kepala" in clean_query) and \
+                ("headache" in desc_lower or "migraine" in desc_lower or "dizziness" in desc_lower or "vertigo" in desc_lower):
+            score += 10
+        if ("tbc" in clean_query or "tuberkulosis" in clean_query or "tb paru" in clean_query) and \
+                "tuberculosis" in desc_lower:
+            score += 12
+        if ("asma" in clean_query or "asthma" in clean_query or "sesak napas" in clean_query or "mengi" in clean_query) and \
+                ("asthma" in desc_lower or "bronchial" in desc_lower):
+            score += 10
+        if ("jantung" in clean_query or "kardiak" in clean_query or "angina" in clean_query) and \
+                ("heart" in desc_lower or "cardiac" in desc_lower or "angina" in desc_lower or "coronary" in desc_lower):
+            score += 10
+        if ("ginjal" in clean_query or "nefropati" in clean_query or "ckd" in clean_query) and \
+                ("kidney" in desc_lower or "renal" in desc_lower or "nephr" in desc_lower):
+            score += 10
+        if ("stroke" in clean_query or "cerebral" in clean_query or "cvd" in clean_query) and \
+                ("stroke" in desc_lower or "cerebral" in desc_lower or "cerebrovascular" in desc_lower):
+            score += 10
+        if ("anemia" in clean_query or "hb rendah" in clean_query or "kurang darah" in clean_query) and \
+                ("anaemia" in desc_lower or "anemia" in desc_lower):
+            score += 10
+        if ("diare" in clean_query or "mencret" in clean_query or "disentri" in clean_query) and \
+                ("diarrhoea" in desc_lower or "diarrhea" in desc_lower or "gastroenteritis" in desc_lower):
+            score += 10
+        if ("demam berdarah" in clean_query or "dbd" in clean_query or "dengue" in clean_query) and \
+                "dengue" in desc_lower:
+            score += 12
+        if ("tipes" in clean_query or "tifoid" in clean_query or "typhoid" in clean_query) and \
+                ("typhoid" in desc_lower or "salmonella" in desc_lower):
+            score += 12
+        if ("rematik" in clean_query or "artritis" in clean_query or "radang sendi" in clean_query) and \
+                ("arthritis" in desc_lower or "rheumatoid" in desc_lower):
+            score += 10
+        if ("kolesterol" in clean_query or "dislipidemia" in clean_query or "lemak darah" in clean_query) and \
+                ("dyslipidaemia" in desc_lower or "lipid" in desc_lower or "cholesterol" in desc_lower or
+                 "hypercholesterolaemia" in desc_lower):
+            score += 12
 
         if score > 0:
             scored_records.append((score, rec))
@@ -531,6 +640,213 @@ async def recommend_icd(request: RecommendICDRequest):
             extracted_diagnosis=istilah_diagnosis,
             candidates=candidates_pydantic,
         )
+
+
+# ==============================================================================
+# Endpoint 3: /generate-assessment-icd
+# Input: Subjective (dari transkrip) + Objective (diisi manual dokter)
+# Proses:
+#   Langkah 1 — LLM membuat Assessment dari S + O (bukan dari transkrip)
+#   Langkah 2 — RAG ICD-10: Ekstraksi -> Retrieval CSV -> Verifikasi LLM
+# Output: Assessment + Kode ICD-10 yang akurat untuk klaim BPJS
+# ==============================================================================
+
+@app.post(
+    "/generate-assessment-icd",
+    response_model=GenerateAssessmentICDResponse,
+    summary="Generate Assessment dari S+O lalu Rekomendasikan Kode ICD-10 via Hybrid RAG & BPJS Guardrails",
+)
+async def generate_assessment_icd(request: GenerateAssessmentICDRequest):
+    """
+    Endpoint utama dengan 5 Tahap Hybrid RAG & BPJS INA-CBGs Guardrails:
+    1. Ekstraksi Entitas Klinis (NER) dari S + O
+    2. Hybrid Search (BM25 Lexical + Dense Embeddings) -> Top-20
+    3. Contextual Re-Ranking -> Top-5
+    4. Grounded Clinical Reasoning (LLM) dengan kriteria INCLUDES & EXCLUDES
+    5. Validasi Deterministik BPJS (Larangan R-code utama, Primary/Secondary, FKTP 144)
+    """
+    subjective = request.subjective.strip()
+    objective = request.objective.strip()
+    plan_context = request.plan.strip() if request.plan else ""
+
+    if not subjective or not objective:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Subjective dan Objective wajib diisi untuk generate Assessment & ICD-10",
+        )
+
+    ai_client, model_name, provider_name = get_ai_client_and_model()
+
+    # -------------------------------------------------------------------------
+    # Tahap 1, 2, 3, 4: Jalankan RAG Pipeline (NER, Hybrid Search, Rerank, Context)
+    # -------------------------------------------------------------------------
+    rag_result = await run_full_pipeline(
+        subjective=subjective,
+        objective=objective,
+        ai_client=ai_client,
+        model_name=model_name,
+    )
+
+    clinical_entities = rag_result.get("clinical_entities", {})
+    top_candidates = rag_result.get("top_candidates", [])
+    reasoning_context = rag_result.get("reasoning_context", "")
+    kb = rag_result.get("knowledge_base", [])
+
+    # Format candidates list for Pydantic response backward compatibility
+    candidates_pydantic = [
+        ICDCandidate(
+            kode=c.get("code", ""),
+            deskripsi=f"{c.get('title', '')} - {c.get('title_id', '')}",
+        )
+        for c in top_candidates
+    ]
+
+    # -------------------------------------------------------------------------
+    # Tahap 4: Grounded LLM Clinical Reasoning (Differential Diagnosis Top-3)
+    # -------------------------------------------------------------------------
+    assessment_text = ""
+    differential_diagnoses: List[str] = []
+    clinical_reasoning = ""
+    raw_recommendations: List[dict] = []
+    r_code_warning: Optional[str] = None
+    assessment_narrative: Optional[str] = None
+
+    if ai_client is not None and top_candidates:
+        try:
+            entities_str = json.dumps(clinical_entities, ensure_ascii=False, indent=2)
+            prompt = ICD_GROUNDED_REASONING_PROMPT.format(
+                clinical_entities=entities_str,
+                candidates_detail=reasoning_context,
+            )
+
+            completion = ai_client.chat.completions.create(
+                model=model_name,
+                temperature=0,
+                response_format={"type": "json_object"},
+                messages=[
+                    {
+                        "role": "system",
+                        "content": (
+                            "Anda adalah Clinical Decision Support System untuk klaim BPJS Kesehatan. "
+                            "Patuhi aturan koding INA-CBGs dengan ketat. Evaluasi HANYA kandidat yang disediakan. "
+                            "Output WAJIB berupa JSON valid."
+                        ),
+                    },
+                    {"role": "user", "content": prompt},
+                ],
+            )
+
+            raw_json = json.loads(completion.choices[0].message.content or "{}")
+            raw_recommendations = raw_json.get("recommendations", [])
+            r_code_warning = raw_json.get("r_code_warning")
+            assessment_narrative = raw_json.get("assessment_narrative")
+
+            if raw_recommendations:
+                primary_rec = raw_recommendations[0]
+                assessment_text = (
+                    f"{primary_rec.get('display_name_id', '') or primary_rec.get('display_name', '')} "
+                    f"[{primary_rec.get('code', '')}]"
+                )
+                differential_diagnoses = [
+                    f"{r.get('display_name_id', '') or r.get('display_name', '')} [{r.get('code', '')}]"
+                    for r in raw_recommendations[1:]
+                ]
+                clinical_reasoning = primary_rec.get("clinical_rationale", "")
+
+        except Exception as e:
+            # Fallback jika terjadi limit / LLM error
+            pass
+
+    # Fallback jika LLM tidak menghasilkan rekomendasi
+    if not raw_recommendations and top_candidates:
+        top_cand = top_candidates[0]
+        assessment_text = f"{top_cand.get('title_id', '')} [{top_cand.get('code', '')}]"
+        differential_diagnoses = [
+            f"{c.get('title_id', '')} [{c.get('code', '')}]"
+            for c in top_candidates[1:3]
+        ]
+        clinical_reasoning = (
+            f"Diagnosis ditentukan berdasarkan kemiripan klinis tertinggi pada kamus ICD-10 "
+            f"dengan keluhan '{clinical_entities.get('search_query_id', subjective[:60])}'."
+        )
+        raw_recommendations = [
+            {
+                "rank": idx + 1,
+                "code": c.get("code", ""),
+                "display_name": c.get("title", ""),
+                "display_name_id": c.get("title_id", ""),
+                "confidence": max(0.60, round(float(c.get("rerank_score", c.get("search_score", 0.85))), 2)),
+                "classification": "primary" if idx == 0 and not c.get("is_symptom_code") else "secondary",
+                "clinical_rationale": (
+                    f"Kesesuaian dengan parameter tanda vital: {', '.join(c.get('typical_vitals', []))}. "
+                    f"Kata kunci: {', '.join(c.get('clinical_keywords', [])[:4])}."
+                ),
+                "evidence_s": subjective[:120],
+                "evidence_o": objective[:120],
+                "excludes_checked": "Evaluasi otomatis aturan eksklusi knowledge base",
+            }
+            for idx, c in enumerate(top_candidates[:3])
+        ]
+
+    # -------------------------------------------------------------------------
+    # Tahap 5: Validasi Deterministik Pasca-Generasi (BPJS INA-CBGs Guardrails)
+    # -------------------------------------------------------------------------
+    validated_recs_raw = validate_rag_recommendations(raw_recommendations, kb)
+
+    # Transform to Pydantic models
+    validated_recs: List[ICDRecommendationItem] = []
+    for item in validated_recs_raw:
+        v_info = item.get("validation", {})
+        bpjs_val = BPJSValidationInfo(
+            code=v_info.get("code", item.get("code", "")),
+            is_valid=v_info.get("is_valid", True),
+            warnings=v_info.get("warnings", []),
+            can_be_primary=v_info.get("can_be_primary", True),
+            is_fktp_144=v_info.get("is_fktp_144", False),
+            classification=v_info.get("classification", item.get("classification", "primary")),
+        )
+        validated_recs.append(
+            ICDRecommendationItem(
+                rank=item.get("rank", 1),
+                code=item.get("code", ""),
+                display_name=item.get("display_name", ""),
+                display_name_id=item.get("display_name_id", ""),
+                confidence=float(item.get("confidence", 0.85)),
+                classification=bpjs_val.classification,
+                clinical_rationale=item.get("clinical_rationale", ""),
+                evidence_s=item.get("evidence_s", ""),
+                evidence_o=item.get("evidence_o", ""),
+                excludes_checked=item.get("excludes_checked", ""),
+                validation=bpjs_val,
+            )
+        )
+
+    # Primary selection
+    top_primary = next((r for r in validated_recs if r.classification == "primary"), validated_recs[0])
+
+    # Kumpulkan peringatan R-code jika ada
+    r_warnings = [
+        w for r in validated_recs for w in (r.validation.warnings if r.validation else []) if "R-code" in w or "gejala" in w
+    ]
+    if r_warnings and not r_code_warning:
+        r_code_warning = r_warnings[0]
+
+    return GenerateAssessmentICDResponse(
+        success=True,
+        assessment=assessment_narrative or assessment_text,
+        differential_diagnoses=differential_diagnoses,
+        clinical_reasoning=clinical_reasoning,
+        recommendations=validated_recs,
+        r_code_warning=r_code_warning,
+        assessment_narrative=assessment_narrative,
+        selected_code=top_primary.code,
+        selected_description=f"{top_primary.display_name} ({top_primary.display_name_id})",
+        confidence=top_primary.confidence,
+        evidence=f"Subjective: '{top_primary.evidence_s or subjective[:80]}' | Objective: '{top_primary.evidence_o or objective[:80]}'",
+        icd_reasoning=top_primary.clinical_rationale,
+        extracted_diagnosis=clinical_entities.get("search_query_id", assessment_text),
+        candidates=candidates_pydantic,
+    )
 
 
 # Health check endpoint

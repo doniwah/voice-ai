@@ -10,6 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as LoginRouteImport } from './routes/login'
 import { Route as PasienRouteImport } from './routes/pasien'
 import { Route as PengaturanRouteImport } from './routes/pengaturan'
 import { Route as RiwayatCatatanRouteImport } from './routes/riwayat-catatan'
@@ -18,6 +19,11 @@ import { Route as VoiceScribeRouteImport } from './routes/voice-scribe'
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LoginRoute = LoginRouteImport.update({
+  id: '/login',
+  path: '/login',
   getParentRoute: () => rootRouteImport,
 } as any)
 const PasienRoute = PasienRouteImport.update({
@@ -43,6 +49,7 @@ const VoiceScribeRoute = VoiceScribeRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/login': typeof LoginRoute
   '/pasien': typeof PasienRoute
   '/pengaturan': typeof PengaturanRoute
   '/riwayat-catatan': typeof RiwayatCatatanRoute
@@ -50,6 +57,7 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/login': typeof LoginRoute
   '/pasien': typeof PasienRoute
   '/pengaturan': typeof PengaturanRoute
   '/riwayat-catatan': typeof RiwayatCatatanRoute
@@ -58,6 +66,7 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/login': typeof LoginRoute
   '/pasien': typeof PasienRoute
   '/pengaturan': typeof PengaturanRoute
   '/riwayat-catatan': typeof RiwayatCatatanRoute
@@ -66,12 +75,24 @@ export interface FileRoutesById {
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
-    '/' | '/pasien' | '/pengaturan' | '/riwayat-catatan' | '/voice-scribe'
+    | '/'
+    | '/login'
+    | '/pasien'
+    | '/pengaturan'
+    | '/riwayat-catatan'
+    | '/voice-scribe'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/pasien' | '/pengaturan' | '/riwayat-catatan' | '/voice-scribe'
+  to:
+    | '/'
+    | '/login'
+    | '/pasien'
+    | '/pengaturan'
+    | '/riwayat-catatan'
+    | '/voice-scribe'
   id:
     | '__root__'
     | '/'
+    | '/login'
     | '/pasien'
     | '/pengaturan'
     | '/riwayat-catatan'
@@ -80,6 +101,7 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  LoginRoute: typeof LoginRoute
   PasienRoute: typeof PasienRoute
   PengaturanRoute: typeof PengaturanRoute
   RiwayatCatatanRoute: typeof RiwayatCatatanRoute
@@ -93,6 +115,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/login': {
+      id: '/login'
+      path: '/login'
+      fullPath: '/login'
+      preLoaderRoute: typeof LoginRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/pasien': {
@@ -128,6 +157,7 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  LoginRoute: LoginRoute,
   PasienRoute: PasienRoute,
   PengaturanRoute: PengaturanRoute,
   RiwayatCatatanRoute: RiwayatCatatanRoute,

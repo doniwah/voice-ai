@@ -4,6 +4,7 @@ import {
   Link,
   createRootRouteWithContext,
   useRouter,
+  useRouterState,
   HeadContent,
   Scripts,
   type ErrorComponentProps,
@@ -141,6 +142,34 @@ function RootShell({ children }: { children: ReactNode }) {
 
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
+  const pathname = useRouterState({
+    select: (router) => router.location.pathname,
+  });
+
+  const isLoginPage = pathname === "/login";
+
+  // Check authentication
+  useEffect(() => {
+    if (!isLoginPage) {
+      try {
+        const auth = localStorage.getItem("soapi_auth");
+        if (!auth) {
+          window.location.href = "/login";
+        }
+      } catch {
+        // ignore
+      }
+    }
+  }, [isLoginPage, pathname]);
+
+  if (isLoginPage) {
+    return (
+      <QueryClientProvider client={queryClient}>
+        <Outlet />
+        <Toaster position="top-right" richColors />
+      </QueryClientProvider>
+    );
+  }
 
   return (
     <QueryClientProvider client={queryClient}>

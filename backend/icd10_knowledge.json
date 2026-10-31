@@ -1,0 +1,1852 @@
+[
+  {
+    "code": "I10",
+    "title": "Essential (primary) hypertension",
+    "title_id": "Hipertensi primer (esensial)",
+    "chapter": "IX",
+    "block": "I10-I15",
+    "is_fktp_144": true,
+    "is_symptom_code": false,
+    "can_be_primary": true,
+    "includes": [
+      "High blood pressure",
+      "Hypertension (arterial)(benign)(essential)(malignant)(primary)(systemic)"
+    ],
+    "excludes": [
+      "Involving vessels of brain (I60-I69)",
+      "Involving vessels of eye (H35.0)",
+      "Renal hypertension (I15.0-I15.1)"
+    ],
+    "clinical_keywords": [
+      "tekanan darah tinggi",
+      "tensi tinggi",
+      "hipertensi",
+      "hypertension",
+      "leher kaku",
+      "tengkuk berat",
+      "pusing berdenyut",
+      "TD 140/90",
+      "TD 150/90",
+      "TD 160/100",
+      "amlodipine",
+      "candesartan",
+      "captopril",
+      "jnc 8 stage 1",
+      "jnc 8 stage 2"
+    ],
+    "synonyms_id": [
+      "darah tinggi",
+      "tensi naik",
+      "tengkuk tegang",
+      "pusing darah tinggi"
+    ],
+    "severity_indicators": [
+      "TD >= 140/90 mmHg (Stage 1)",
+      "TD >= 160/100 mmHg (Stage 2)",
+      "TD >= 180/120 mmHg (Krisis Hipertensi)"
+    ],
+    "typical_vitals": [
+      "TD >= 140/90 mmHg",
+      "Nadi normal/takikardia ringan",
+      "Kesadaran Compos Mentis"
+    ],
+    "dagger_asterisk": null
+  },
+  {
+    "code": "I11.9",
+    "title": "Hypertensive heart disease without heart failure",
+    "title_id": "Penyakit jantung hipertensi tanpa gagal jantung",
+    "chapter": "IX",
+    "block": "I10-I15",
+    "is_fktp_144": false,
+    "is_symptom_code": false,
+    "can_be_primary": true,
+    "includes": [
+      "Hypertensive cardiomegaly without heart failure",
+      "HHD without HF",
+      "LVH ec hypertension"
+    ],
+    "excludes": [
+      "Hypertensive heart disease with heart failure (I11.0)"
+    ],
+    "clinical_keywords": [
+      "hipertensi lama",
+      "hhd",
+      "hipertrofi ventrikel kiri",
+      "lvh",
+      "jantung bengkak",
+      "kardiomegali",
+      "rontgen kardiomegali",
+      "ekg lvh",
+      "sokolow lyon positif",
+      "td tinggi kronis"
+    ],
+    "synonyms_id": [
+      "pembengkakan jantung karena tensi",
+      "jantung membesar akibat darah tinggi"
+    ],
+    "severity_indicators": [
+      "Kardiomegali pada foto toraks CTR > 50%",
+      "EKG voltage criteria LVH"
+    ],
+    "typical_vitals": [
+      "TD tinggi kronis (sering > 150 mmHg)",
+      "Nadi kuat angkat"
+    ],
+    "dagger_asterisk": null
+  },
+  {
+    "code": "I15.9",
+    "title": "Secondary hypertension unspecified",
+    "title_id": "Hipertensi sekunder tidak spesifik",
+    "chapter": "IX",
+    "block": "I10-I15",
+    "is_fktp_144": false,
+    "is_symptom_code": false,
+    "can_be_primary": true,
+    "includes": [
+      "Secondary arterial hypertension",
+      "Hypertension secondary to other disorders"
+    ],
+    "excludes": [
+      "Essential hypertension (I10)"
+    ],
+    "clinical_keywords": [
+      "hipertensi usia muda",
+      "hipertensi resisten",
+      "hipertensi sekunder",
+      "penyakit ginjal penyebab tensi",
+      "feokromositoma",
+      "aldosteronisme",
+      "cushing"
+    ],
+    "synonyms_id": [
+      "darah tinggi karena penyakit lain",
+      "hipertensi sekunder"
+    ],
+    "severity_indicators": [
+      "Hipertensi onset muda <30 tahun",
+      "Refrakter terhadap 3 obat antihipertensi"
+    ],
+    "typical_vitals": [
+      "TD sangat tinggi persisten"
+    ],
+    "dagger_asterisk": null
+  },
+  {
+    "code": "E11.9",
+    "title": "Type 2 diabetes mellitus without complications",
+    "title_id": "Diabetes melitus tipe 2 tanpa komplikasi",
+    "chapter": "IV",
+    "block": "E10-E14",
+    "is_fktp_144": true,
+    "is_symptom_code": false,
+    "can_be_primary": true,
+    "includes": [
+      "Non-insulin-dependent diabetes mellitus (NIDDM)",
+      "Type 2 diabetes mellitus NOS"
+    ],
+    "excludes": [
+      "Type 1 diabetes (E10.-)",
+      "Gestational diabetes (O24.4)",
+      "Diabetes with complications (E11.0-E11.8)"
+    ],
+    "clinical_keywords": [
+      "gula darah tinggi",
+      "diabetes melitus",
+      "dm tipe 2",
+      "polidipsi",
+      "banyak minum",
+      "polifagi",
+      "banyak makan",
+      "poliuri",
+      "sering kencing malam",
+      "gds > 200",
+      "gdp > 126",
+      "hba1c > 6.5",
+      "metformin",
+      "glimepiride"
+    ],
+    "synonyms_id": [
+      "kencing manis",
+      "sakit gula",
+      "diabetes",
+      "gula darah naik"
+    ],
+    "severity_indicators": [
+      "GDS >= 200 mg/dL dengan gejala klasik",
+      "GDP >= 126 mg/dL",
+      "HbA1c >= 6.5%"
+    ],
+    "typical_vitals": [
+      "Tanda vital biasanya stabil",
+      "BMI seringkali overweight/obesitas"
+    ],
+    "dagger_asterisk": null
+  },
+  {
+    "code": "E10.9",
+    "title": "Type 1 diabetes mellitus without complications",
+    "title_id": "Diabetes melitus tipe 1 tanpa komplikasi",
+    "chapter": "IV",
+    "block": "E10-E14",
+    "is_fktp_144": false,
+    "is_symptom_code": false,
+    "can_be_primary": true,
+    "includes": [
+      "Insulin-dependent diabetes mellitus (IDDM)",
+      "Juvenile diabetes"
+    ],
+    "excludes": [
+      "Type 2 diabetes (E11.-)",
+      "Diabetes in pregnancy (O24.-)"
+    ],
+    "clinical_keywords": [
+      "dm tipe 1",
+      "ketergantungan insulin",
+      "diabetes usia anak remaja",
+      "penurunan berat badan drastis",
+      "ketoasidosis",
+      "autoimun pankreas"
+    ],
+    "synonyms_id": [
+      "diabetes anak",
+      "diabetes suntik insulin"
+    ],
+    "severity_indicators": [
+      "Ketoasidosis diabetikum (KAD)",
+      "Penurunan berat badan progresif"
+    ],
+    "typical_vitals": [
+      "Napas kussmaul bila asidosis",
+      "Hipotensi ortostatik"
+    ],
+    "dagger_asterisk": null
+  },
+  {
+    "code": "E11.22",
+    "title": "Type 2 diabetes mellitus with diabetic chronic kidney disease",
+    "title_id": "Diabetes melitus tipe 2 dengan penyakit ginjal kronik diabetik",
+    "chapter": "IV",
+    "block": "E10-E14",
+    "is_fktp_144": false,
+    "is_symptom_code": false,
+    "can_be_primary": true,
+    "includes": [
+      "Diabetic nephropathy",
+      "Type 2 DM with CKD"
+    ],
+    "excludes": [
+      "Type 1 DM with renal complications (E10.2-)"
+    ],
+    "clinical_keywords": [
+      "nefropati diabetik",
+      "dm dengan komplikasi ginjal",
+      "proteinuria",
+      "mikroalbuminuria",
+      "kreatinin meningkat",
+      "edema tungkai",
+      "gagal ginjal ec dm"
+    ],
+    "synonyms_id": [
+      "komplikasi ginjal diabetes",
+      "ginjal bocor karena gula"
+    ],
+    "severity_indicators": [
+      "eGFR < 60 mL/min/1.73m2",
+      "UACR > 300 mg/g",
+      "Kreatinin serum meningkat"
+    ],
+    "typical_vitals": [
+      "Hipertensi sering menyertai",
+      "Edema pretibial"
+    ],
+    "dagger_asterisk": "dagger"
+  },
+  {
+    "code": "E78.0",
+    "title": "Pure hypercholesterolaemia",
+    "title_id": "Hiperkolesterolemia murni",
+    "chapter": "IV",
+    "block": "E70-E90",
+    "is_fktp_144": true,
+    "is_symptom_code": false,
+    "can_be_primary": true,
+    "includes": [
+      "Familial hypercholesterolaemia",
+      "Fredrickson hyperlipoproteinaemia type IIa",
+      "Hyperbetalipoproteinaemia"
+    ],
+    "excludes": [
+      "Mixed hyperlipidaemia (E78.2)"
+    ],
+    "clinical_keywords": [
+      "kolesterol tinggi",
+      "hiperkolesterolemia",
+      "kolesterol total > 200",
+      "ldl tinggi",
+      "simvastatin",
+      "atorvastatin",
+      "arcus senilis",
+      "xanthelasma"
+    ],
+    "synonyms_id": [
+      "kolesterol tinggi",
+      "lemak darah tinggi",
+      "kolesterol pekat"
+    ],
+    "severity_indicators": [
+      "Kolesterol Total >= 200 mg/dL",
+      "LDL >= 160 mg/dL",
+      "LDL >= 190 mg/dL (Sangat tinggi)"
+    ],
+    "typical_vitals": [
+      "Tanda vital dalam batas normal"
+    ],
+    "dagger_asterisk": null
+  },
+  {
+    "code": "E78.5",
+    "title": "Hyperlipidaemia unspecified",
+    "title_id": "Hiperlipidemia tidak spesifik (Dislipidemia)",
+    "chapter": "IV",
+    "block": "E70-E90",
+    "is_fktp_144": true,
+    "is_symptom_code": false,
+    "can_be_primary": true,
+    "includes": [
+      "Dyslipidaemia NOS",
+      "Hyperlipoproteinaemia NOS"
+    ],
+    "excludes": [
+      "Pure hypercholesterolaemia (E78.0)",
+      "Pure hyperglyceridaemia (E78.1)"
+    ],
+    "clinical_keywords": [
+      "dislipidemia",
+      "profil lipid abnormal",
+      "trigliserida tinggi",
+      "kolesterol campuran",
+      "lemak darah campur",
+      "gemfibrozil",
+      "fenofibrate"
+    ],
+    "synonyms_id": [
+      "dislipidemia",
+      "gangguan lemak darah"
+    ],
+    "severity_indicators": [
+      "Trigliserida > 200 mg/dL",
+      "Kolesterol total dan trigliserida sama-sama meningkat"
+    ],
+    "typical_vitals": [
+      "Normal"
+    ],
+    "dagger_asterisk": null
+  },
+  {
+    "code": "J00",
+    "title": "Acute nasopharyngitis (common cold)",
+    "title_id": "Nasofaringitis akut (common cold / batuk pilek)",
+    "chapter": "X",
+    "block": "J00-J06",
+    "is_fktp_144": true,
+    "is_symptom_code": false,
+    "can_be_primary": true,
+    "includes": [
+      "Coryza (acute)",
+      "Nasal catarrh acute",
+      "Acute rhinitis",
+      "Infective nasopharyngitis NOS"
+    ],
+    "excludes": [
+      "Allergic rhinitis (J30.1-J30.4)",
+      "Chronic nasopharyngitis (J31.1)",
+      "Pharyngitis acute (J02.-)"
+    ],
+    "clinical_keywords": [
+      "pilek",
+      "hidung tersumbat",
+      "ingus encer",
+      "bersin-bersin",
+      "common cold",
+      "rhinitis akut",
+      "sumeng",
+      "hidung mampet",
+      "paracetamol",
+      "ctm"
+    ],
+    "synonyms_id": [
+      "selesma",
+      "pilek flu biasa",
+      "masuk angin bersin-bersin"
+    ],
+    "severity_indicators": [
+      "Umumnya swasirna (self-limiting) 3-7 hari",
+      "Sekresi hidung serosa atau mukoid"
+    ],
+    "typical_vitals": [
+      "Suhu 36.8 - 37.8°C (afebris atau subfebris)",
+      "Nadi normal",
+      "Laju napas normal"
+    ],
+    "dagger_asterisk": null
+  },
+  {
+    "code": "J02.9",
+    "title": "Acute pharyngitis unspecified",
+    "title_id": "Faringitis akut tidak spesifik (radang tenggorokan)",
+    "chapter": "X",
+    "block": "J00-J06",
+    "is_fktp_144": true,
+    "is_symptom_code": false,
+    "can_be_primary": true,
+    "includes": [
+      "Acute sore throat",
+      "Pharyngitis NOS"
+    ],
+    "excludes": [
+      "Acute tonsillitis (J03.-)",
+      "Peritonsillar abscess (J36)"
+    ],
+    "clinical_keywords": [
+      "radang tenggorokan",
+      "sakit menelan",
+      "tenggorokan nyeri",
+      "faring hiperemis",
+      "odinofagi",
+      "faringitis akut",
+      "dinding posterior faring merah",
+      "demam ringan"
+    ],
+    "synonyms_id": [
+      "radang tenggorokan",
+      "tenggorokan panas sakit nelan"
+    ],
+    "severity_indicators": [
+      "Faring hiperemis bilateral",
+      "Pembesaran kelenjar getah bening leher anterior"
+    ],
+    "typical_vitals": [
+      "Suhu 37.5 - 38.5°C",
+      "Nadi normal/takikardia ringan"
+    ],
+    "dagger_asterisk": null
+  },
+  {
+    "code": "J03.9",
+    "title": "Acute tonsillitis unspecified",
+    "title_id": "Tonsilitis akut tidak spesifik (radang amandel)",
+    "chapter": "X",
+    "block": "J00-J06",
+    "is_fktp_144": true,
+    "is_symptom_code": false,
+    "can_be_primary": true,
+    "includes": [
+      "Tonsillitis (acute) NOS",
+      "Follicular tonsillitis",
+      "Gangrenous tonsillitis"
+    ],
+    "excludes": [
+      "Chronic tonsillitis (J35.0)",
+      "Peritonsillar abscess (J36)"
+    ],
+    "clinical_keywords": [
+      "tonsilitis",
+      "amandel bengkak",
+      "amandel membesar T2-T2 T3-T3",
+      "detritus amandel",
+      "tonsil hiperemis",
+      "kripte melebar",
+      "sakit menelan berat",
+      "demam tinggi"
+    ],
+    "synonyms_id": [
+      "amandel bengkak",
+      "radang amandel"
+    ],
+    "severity_indicators": [
+      "Tonsil T2-T3 atau T3-T3",
+      "Detritus/eksudat tonsil (+)",
+      "Demam > 38.5°C"
+    ],
+    "typical_vitals": [
+      "Suhu 38.0 - 39.0°C",
+      "Takikardia relatif"
+    ],
+    "dagger_asterisk": null
+  },
+  {
+    "code": "J06.9",
+    "title": "Acute upper respiratory infection unspecified",
+    "title_id": "Infeksi saluran pernapasan akut atas (ISPA)",
+    "chapter": "X",
+    "block": "J00-J06",
+    "is_fktp_144": true,
+    "is_symptom_code": false,
+    "can_be_primary": true,
+    "includes": [
+      "Upper respiratory infection (acute) NOS",
+      "URI NOS",
+      "URTI NOS"
+    ],
+    "excludes": [
+      "Chronic upper respiratory disease (J30-J39)",
+      "Lower respiratory tract infection (J20-J22)"
+    ],
+    "clinical_keywords": [
+      "ispa",
+      "infeksi saluran napas atas",
+      "batuk pilek demam",
+      "gejala napas atas",
+      "urti",
+      "badan pegal demam",
+      "tenggorokan gatal"
+    ],
+    "synonyms_id": [
+      "ispa",
+      "batuk pilek panas",
+      "infeksi pernapasan"
+    ],
+    "severity_indicators": [
+      "Kombinasi gejala rhinitis, faringitis, dan batuk akut < 14 hari"
+    ],
+    "typical_vitals": [
+      "Suhu 37.2 - 38.3°C",
+      "Laju napas 16-20x/menit"
+    ],
+    "dagger_asterisk": null
+  },
+  {
+    "code": "J20.9",
+    "title": "Acute bronchitis unspecified",
+    "title_id": "Bronkitis akut tidak spesifik",
+    "chapter": "X",
+    "block": "J20-J22",
+    "is_fktp_144": true,
+    "is_symptom_code": false,
+    "can_be_primary": true,
+    "includes": [
+      "Bronchitis acute or subacute with bronchospasm",
+      "Tracheobronchitis acute"
+    ],
+    "excludes": [
+      "Chronic bronchitis (J41-J42)",
+      "Bronchial asthma (J45.-)"
+    ],
+    "clinical_keywords": [
+      "bronkitis akut",
+      "batuk berdahak kuning kehijauan",
+      "ronki basah kasar",
+      "batuk dalam",
+      "dahak produktif",
+      "nyeri dada saat batuk",
+      "ambroxol",
+      "n-acetylcysteine"
+    ],
+    "synonyms_id": [
+      "bronkitis",
+      "radang saluran bronkus",
+      "batuk dahak kental"
+    ],
+    "severity_indicators": [
+      "Batuk berdahak > 5 hari",
+      "Ronki kasar pada auskultasi paru"
+    ],
+    "typical_vitals": [
+      "Suhu subfebris 37.5 - 38.2°C",
+      "RR 18-22x/menit"
+    ],
+    "dagger_asterisk": null
+  },
+  {
+    "code": "J45.909",
+    "title": "Unspecified asthma uncomplicated",
+    "title_id": "Asma bronkial tanpa komplikasi",
+    "chapter": "X",
+    "block": "J45-J46",
+    "is_fktp_144": true,
+    "is_symptom_code": false,
+    "can_be_primary": true,
+    "includes": [
+      "Asthmatic bronchitis NOS",
+      "Bronchial asthma NOS",
+      "Allergic asthma"
+    ],
+    "excludes": [
+      "Status asthmaticus (J46)",
+      "Chronic obstructive asthma (J44.-)"
+    ],
+    "clinical_keywords": [
+      "asma",
+      "sesak napas berulang",
+      "mengi",
+      "wheezing",
+      "napas berbunyi ngik-ngik",
+      "kambuh saat dingin",
+      "riwayat alergi atopi",
+      "salbutamol",
+      "inhaler"
+    ],
+    "synonyms_id": [
+      "asma",
+      "bengek",
+      "mengi",
+      "sesak napas kambuhan"
+    ],
+    "severity_indicators": [
+      "Wheezing ekspiratoar pada kedua lapang paru",
+      "Kambuh malam/dini hari"
+    ],
+    "typical_vitals": [
+      "RR meningkat 22-28x/menit",
+      "SpO2 94-98%",
+      "Wheezing ekspirasi (+/+)"
+    ],
+    "dagger_asterisk": null
+  },
+  {
+    "code": "J18.9",
+    "title": "Pneumonia unspecified",
+    "title_id": "Pneumonia tidak spesifik (radang paru-paru)",
+    "chapter": "X",
+    "block": "J09-J18",
+    "is_fktp_144": false,
+    "is_symptom_code": false,
+    "can_be_primary": true,
+    "includes": [
+      "Infectious pneumonia",
+      "Pneumonitis NOS"
+    ],
+    "excludes": [
+      "Aspiration pneumonia (J69.0)",
+      "Chronic pneumonia"
+    ],
+    "clinical_keywords": [
+      "pneumonia",
+      "paru-paru basah",
+      "batuk sesak demam tinggi",
+      "ronki basah halus nyaring",
+      "ronki krepitasi",
+      "infiltrat paru",
+      "foto toraks konsolidasi",
+      "leukositosis",
+      "curb-65"
+    ],
+    "synonyms_id": [
+      "paru-paru basah",
+      "radang paru",
+      "infeksi paru berat"
+    ],
+    "severity_indicators": [
+      "Demam menggigil > 38.5°C",
+      "Laju napas > 24x/menit",
+      "Infiltrat pada rontgen dada"
+    ],
+    "typical_vitals": [
+      "Suhu 38.5 - 39.5°C",
+      "RR > 24x/menit",
+      "SpO2 sering < 95%"
+    ],
+    "dagger_asterisk": null
+  },
+  {
+    "code": "K29.7",
+    "title": "Gastritis unspecified",
+    "title_id": "Gastritis tidak spesifik (maag)",
+    "chapter": "XI",
+    "block": "K20-K31",
+    "is_fktp_144": true,
+    "is_symptom_code": false,
+    "can_be_primary": true,
+    "includes": [
+      "Gastritis NOS",
+      "Gastric inflammation"
+    ],
+    "excludes": [
+      "Gastroenteritis (A09)",
+      "Zollinger-Ellison syndrome (E16.4)"
+    ],
+    "clinical_keywords": [
+      "gastritis",
+      "sakit maag",
+      "nyeri ulu hati",
+      "perih lambung",
+      "epigastrium nyeri tekan",
+      "mual perih",
+      "kembung begah",
+      "telat makan perih",
+      "antasida",
+      "omeprazole"
+    ],
+    "synonyms_id": [
+      "sakit maag",
+      "asam lambung perih",
+      "radang lambung"
+    ],
+    "severity_indicators": [
+      "Nyeri tekan regio epigastrium (+)",
+      "Nyeri membaik setelah antasida atau makan"
+    ],
+    "typical_vitals": [
+      "TD normal",
+      "Nadi normal",
+      "Suhu afebris"
+    ],
+    "dagger_asterisk": null
+  },
+  {
+    "code": "K30",
+    "title": "Functional dyspepsia",
+    "title_id": "Dispepsia fungsional",
+    "chapter": "XI",
+    "block": "K20-K31",
+    "is_fktp_144": true,
+    "is_symptom_code": false,
+    "can_be_primary": true,
+    "includes": [
+      "Dyspepsia NOS",
+      "Indigestion"
+    ],
+    "excludes": [
+      "Heartburn (R12)",
+      "Dyspepsia from organic ulcer (K25-K27)"
+    ],
+    "clinical_keywords": [
+      "dispepsia",
+      "rasa penuh setelah makan",
+      "cepat kenyang",
+      "kembung",
+      "begah sendawa",
+      "rasa tidak nyaman perut atas",
+      "domperidone",
+      "sukralfat"
+    ],
+    "synonyms_id": [
+      "gangguan pencernaan begah",
+      "kembung masuk angin lambung"
+    ],
+    "severity_indicators": [
+      "Gejala persisten tanpa alarm signs (tanpa muntah darah, tanpa BB turun drastis)"
+    ],
+    "typical_vitals": [
+      "Tanda vital dalam batas normal"
+    ],
+    "dagger_asterisk": null
+  },
+  {
+    "code": "K21.9",
+    "title": "Gastro-esophageal reflux disease without esophagitis",
+    "title_id": "Penyakit refluks gastroesofagus (GERD) tanpa esofagitis",
+    "chapter": "XI",
+    "block": "K20-K31",
+    "is_fktp_144": true,
+    "is_symptom_code": false,
+    "can_be_primary": true,
+    "includes": [
+      "GERD NOS",
+      "Esophageal reflux NOS"
+    ],
+    "excludes": [
+      "GERD with esophagitis (K21.0)"
+    ],
+    "clinical_keywords": [
+      "gerd",
+      "heartburn",
+      "dada terasa panas terbakar",
+      "refluks asam lambung",
+      "regurgitasi rasa asam di mulut",
+      "sendawa pahit",
+      "mual asam naik",
+      "lansoprazole"
+    ],
+    "synonyms_id": [
+      "asam lambung naik ke dada",
+      "gerd",
+      "dada panas asam"
+    ],
+    "severity_indicators": [
+      "Gejala heartburn memberat saat berbaring setelah makan"
+    ],
+    "typical_vitals": [
+      "Normal"
+    ],
+    "dagger_asterisk": null
+  },
+  {
+    "code": "A09",
+    "title": "Infectious gastroenteritis and colitis unspecified",
+    "title_id": "Gastroenteritis dan kolitis infeksius (Diare akut)",
+    "chapter": "I",
+    "block": "A00-A09",
+    "is_fktp_144": true,
+    "is_symptom_code": false,
+    "can_be_primary": true,
+    "includes": [
+      "Infectious diarrhoea",
+      "Catarrhal enteritis",
+      "Infectious gastroenteritis NOS",
+      "Dysentery unspecified"
+    ],
+    "excludes": [
+      "Due to specified bacterial, protozoal, viral agents (A00-A08)",
+      "Non-infectious gastroenteritis (K52.9)"
+    ],
+    "clinical_keywords": [
+      "diare akut",
+      "bab cair",
+      "mencret",
+      "buang air besar cair > 3 kali",
+      "gastroenteritis",
+      "muntaber",
+      "kram perut",
+      "oralit",
+      "zink",
+      "turgor kulit",
+      "dehidrasi ringan"
+    ],
+    "synonyms_id": [
+      "mencret",
+      "muntaber",
+      "diare cair",
+      "buang-buang air"
+    ],
+    "severity_indicators": [
+      "Frekuensi BAB >= 3 kali cair per hari",
+      "Evaluasi dehidrasi (mata cekung, turgor lambat)"
+    ],
+    "typical_vitals": [
+      "Nadi meningkat jika dehidrasi",
+      "Suhu subfebris/febris 37.5 - 38.5°C",
+      "Turgor kulit kembali cepat/lambat"
+    ],
+    "dagger_asterisk": null
+  },
+  {
+    "code": "A01.0",
+    "title": "Typhoid fever",
+    "title_id": "Demam tifoid (tipes)",
+    "chapter": "I",
+    "block": "A00-A09",
+    "is_fktp_144": true,
+    "is_symptom_code": false,
+    "can_be_primary": true,
+    "includes": [
+      "Infection due to Salmonella typhi",
+      "Enteric fever"
+    ],
+    "excludes": [
+      "Paratyphoid fever (A01.1-A01.4)"
+    ],
+    "clinical_keywords": [
+      "demam bertangga",
+      "demam tifoid",
+      "tipes",
+      "panas naik sore malam",
+      "lidah kotor coated tongue",
+      "tremor lidah",
+      "bradikardia relatif",
+      "widal positif",
+      "tubex tf positif",
+      "hepatomegali",
+      "kloramfenikol",
+      "seftriakson"
+    ],
+    "synonyms_id": [
+      "tipes",
+      "tifus",
+      "demam tipes",
+      "gejala tipes"
+    ],
+    "severity_indicators": [
+      "Demam lebih dari 7 hari berpola bertangga",
+      "Tes serologi Tubex >= 4 atau titer Widal >= 1/160"
+    ],
+    "typical_vitals": [
+      "Suhu sore/malam > 38.5°C",
+      "Bradikardia relatif (suhu tinggi tapi nadi tidak sebanding cepat)"
+    ],
+    "dagger_asterisk": null
+  },
+  {
+    "code": "A90",
+    "title": "Dengue fever (classical dengue)",
+    "title_id": "Demam dengue (DBD / klasik)",
+    "chapter": "I",
+    "block": "A90-A99",
+    "is_fktp_144": true,
+    "is_symptom_code": false,
+    "can_be_primary": true,
+    "includes": [
+      "Classical dengue",
+      "Breakbone fever"
+    ],
+    "excludes": [
+      "Dengue haemorrhagic fever (A91)"
+    ],
+    "clinical_keywords": [
+      "demam berdarah",
+      "dengue",
+      "demam mendadak tinggi",
+      "nyeri retroorbital",
+      "sakit belakang bola mata",
+      "pegal linu sendi otot hebat",
+      "breakbone",
+      "rumple leede positif",
+      "petekie",
+      "trombositopenia",
+      "ns1 positif"
+    ],
+    "synonyms_id": [
+      "demam berdarah",
+      "dbd",
+      "dengue flu tulang"
+    ],
+    "severity_indicators": [
+      "Demam bifasik (pelana kuda)",
+      "Trombosit < 150.000 /uL",
+      "Hematokrit meningkat"
+    ],
+    "typical_vitals": [
+      "Suhu 38.5 - 40.0°C mendadak tinggi",
+      "Ptekie (+)",
+      "Uji torniquet positif"
+    ],
+    "dagger_asterisk": null
+  },
+  {
+    "code": "R50.9",
+    "title": "Fever unspecified",
+    "title_id": "Demam tidak spesifik (Febris)",
+    "chapter": "XVIII",
+    "block": "R50-R69",
+    "is_fktp_144": false,
+    "is_symptom_code": true,
+    "can_be_primary": false,
+    "includes": [
+      "Fever NOS",
+      "Pyrexia NOS",
+      "Hyperpyrexia NOS"
+    ],
+    "excludes": [
+      "Fever with specified infectious diagnosis (A00-B99)",
+      "Puerperal pyrexia (O86.0)"
+    ],
+    "clinical_keywords": [
+      "febris",
+      "demam tidak diketahui penyebabnya",
+      "panas badan",
+      "suhu tubuh naik",
+      "menggigil",
+      "badan panas"
+    ],
+    "synonyms_id": [
+      "demam",
+      "panas badan",
+      "meriang"
+    ],
+    "severity_indicators": [
+      "Suhu > 37.5°C tanpa fokus infeksi yang jelas"
+    ],
+    "typical_vitals": [
+      "Suhu > 37.8°C"
+    ],
+    "dagger_asterisk": null
+  },
+  {
+    "code": "R51",
+    "title": "Headache",
+    "title_id": "Sakit kepala (sefalgi tidak spesifik)",
+    "chapter": "XVIII",
+    "block": "R50-R69",
+    "is_fktp_144": false,
+    "is_symptom_code": true,
+    "can_be_primary": false,
+    "includes": [
+      "Facial pain NOS",
+      "Cephalgia NOS"
+    ],
+    "excludes": [
+      "Migraine (G43.-)",
+      "Tension headache (G44.2)",
+      "Trigeminal neuralgia (G50.0)"
+    ],
+    "clinical_keywords": [
+      "sakit kepala",
+      "cephalgia",
+      "sefalgi",
+      "kepala berat",
+      "nyeri kepala"
+    ],
+    "synonyms_id": [
+      "sakit kepala",
+      "puyeng",
+      "pusing kepala"
+    ],
+    "severity_indicators": [
+      "Keluhan nyeri kepala simtomatik"
+    ],
+    "typical_vitals": [
+      "Normal"
+    ],
+    "dagger_asterisk": null
+  },
+  {
+    "code": "G43.909",
+    "title": "Migraine unspecified not intractable",
+    "title_id": "Migrain tidak spesifik",
+    "chapter": "VI",
+    "block": "G40-G47",
+    "is_fktp_144": true,
+    "is_symptom_code": false,
+    "can_be_primary": true,
+    "includes": [
+      "Migraine NOS",
+      "Hemirania"
+    ],
+    "excludes": [
+      "Headache NOS (R51)",
+      "Tension-type headache (G44.2)"
+    ],
+    "clinical_keywords": [
+      "migrain",
+      "sakit kepala sebelah",
+      "nyeri kepala berdenyut unilateral",
+      "fotofobia",
+      "silau",
+      "fonofobia",
+      "mual saat pusing",
+      "aura visual"
+    ],
+    "synonyms_id": [
+      "migrain",
+      "sakit kepala separuh",
+      "kepala cenat-cenut sebelah"
+    ],
+    "severity_indicators": [
+      "Nyeri kepala unilateral berdenyut sedang-berat 4-72 jam",
+      "Diperberat aktivitas fisik"
+    ],
+    "typical_vitals": [
+      "Normal"
+    ],
+    "dagger_asterisk": null
+  },
+  {
+    "code": "G44.209",
+    "title": "Tension-type headache unspecified",
+    "title_id": "Sakit kepala tipe tegang (TTH)",
+    "chapter": "VI",
+    "block": "G40-G47",
+    "is_fktp_144": true,
+    "is_symptom_code": false,
+    "can_be_primary": true,
+    "includes": [
+      "Tension headache NOS",
+      "Muscle contraction headache",
+      "Stress headache"
+    ],
+    "excludes": [
+      "Migraine (G43.-)"
+    ],
+    "clinical_keywords": [
+      "tth",
+      "tension type headache",
+      "kepala terikat pita",
+      "kencang di dahi dan tengkuk",
+      "nyeri tumpul bilateral",
+      "stres kelelahan pusing",
+      "otot perikranial tegang"
+    ],
+    "synonyms_id": [
+      "sakit kepala tegang",
+      "kepala serasa diikat tali",
+      "pusing stres"
+    ],
+    "severity_indicators": [
+      "Nyeri bilateral menekan/mengikat, intensitas ringan-sedang, tidak diperberat jalan"
+    ],
+    "typical_vitals": [
+      "Normal"
+    ],
+    "dagger_asterisk": null
+  },
+  {
+    "code": "M54.5",
+    "title": "Low back pain",
+    "title_id": "Nyeri punggung bawah (LBP / sakit pinggang)",
+    "chapter": "XIII",
+    "block": "M50-M54",
+    "is_fktp_144": true,
+    "is_symptom_code": false,
+    "can_be_primary": true,
+    "includes": [
+      "Lumbago NOS",
+      "Low back strain",
+      "Lumbalgia"
+    ],
+    "excludes": [
+      "Lumbago with sciatica (M54.4)"
+    ],
+    "clinical_keywords": [
+      "lbp",
+      "low back pain",
+      "sakit pinggang",
+      "nyeri punggung bawah",
+      "pegal pinggang setelah angkat berat",
+      "laseque negatif",
+      "spasme otot lumbal"
+    ],
+    "synonyms_id": [
+      "sakit pinggang",
+      "encok pinggang",
+      "pegal linu pinggang"
+    ],
+    "severity_indicators": [
+      "Nyeri lumbal mekanik tanpa defisit neurologis motorik/sensorik"
+    ],
+    "typical_vitals": [
+      "Normal"
+    ],
+    "dagger_asterisk": null
+  },
+  {
+    "code": "M79.1",
+    "title": "Myalgia",
+    "title_id": "Mialgia (Nyeri otot)",
+    "chapter": "XIII",
+    "block": "M70-M79",
+    "is_fktp_144": true,
+    "is_symptom_code": false,
+    "can_be_primary": true,
+    "includes": [
+      "Myositis unspecified",
+      "Muscle pain"
+    ],
+    "excludes": [
+      "Myositis infectious (M60.-)",
+      "Fibromyalgia (M79.7)"
+    ],
+    "clinical_keywords": [
+      "mialgia",
+      "nyeri otot",
+      "pegal linu seluruh badan",
+      "linu sehabis kerja keras",
+      "badan sakit-sakit",
+      "paracetamol",
+      "natrium diklofenak"
+    ],
+    "synonyms_id": [
+      "pegal linu",
+      "nyeri otot",
+      "badan sakit semua",
+      "kelelahan otot"
+    ],
+    "severity_indicators": [
+      "Nyeri tekan difus pada kelompok otot tanpa radang sendi"
+    ],
+    "typical_vitals": [
+      "Normal"
+    ],
+    "dagger_asterisk": null
+  },
+  {
+    "code": "M25.50",
+    "title": "Pain in unspecified joint",
+    "title_id": "Nyeri sendi tidak spesifik (Artralgia)",
+    "chapter": "XIII",
+    "block": "M20-M25",
+    "is_fktp_144": true,
+    "is_symptom_code": false,
+    "can_be_primary": true,
+    "includes": [
+      "Arthralgia NOS",
+      "Joint pain"
+    ],
+    "excludes": [
+      "Gouty arthritis (M10.-)",
+      "Osteoarthritis (M15-M19)"
+    ],
+    "clinical_keywords": [
+      "artralgia",
+      "nyeri sendi",
+      "sendi kaku linu",
+      "ngilu sendi lutut tangan",
+      "sakit persendian"
+    ],
+    "synonyms_id": [
+      "nyeri sendi",
+      "ngilu persendian"
+    ],
+    "severity_indicators": [
+      "Nyeri gerak sendi tanpa deformitas berat"
+    ],
+    "typical_vitals": [
+      "Normal"
+    ],
+    "dagger_asterisk": null
+  },
+  {
+    "code": "L20.9",
+    "title": "Atopic dermatitis unspecified",
+    "title_id": "Dermatitis atopik (eksim kulit)",
+    "chapter": "XII",
+    "block": "L20-L30",
+    "is_fktp_144": true,
+    "is_symptom_code": false,
+    "can_be_primary": true,
+    "includes": [
+      "Eczema flexural",
+      "Besnier prurigo",
+      "Atopic eczema"
+    ],
+    "excludes": [
+      "Contact dermatitis (L23-L25)"
+    ],
+    "clinical_keywords": [
+      "dermatitis atopik",
+      "eksim kulit",
+      "gatal kulit lipatan siku lutut",
+      "plak eritema bersisik",
+      "kulit kering likenifikasi",
+      "eksoriasi garukan",
+      "hidrokortison"
+    ],
+    "synonyms_id": [
+      "eksim",
+      "gatal-gatal alergi kulit lipatan",
+      "kulit bersisik gatal"
+    ],
+    "severity_indicators": [
+      "Lesi pruritus kronis residif pada area fleksural"
+    ],
+    "typical_vitals": [
+      "Normal"
+    ],
+    "dagger_asterisk": null
+  },
+  {
+    "code": "L50.9",
+    "title": "Urticaria unspecified",
+    "title_id": "Urtikaria tidak spesifik (biduran / kaligata)",
+    "chapter": "XII",
+    "block": "L50-L54",
+    "is_fktp_144": true,
+    "is_symptom_code": false,
+    "can_be_primary": true,
+    "includes": [
+      "Hives",
+      "Nettle rash",
+      "Urticaria NOS"
+    ],
+    "excludes": [
+      "Angioneurotic oedema (T78.3)"
+    ],
+    "clinical_keywords": [
+      "urtikaria",
+      "biduran",
+      "kaligata",
+      "bentol merah gatal timbul tenggelam",
+      "plak edema eritematosa",
+      "alergi makanan dingin",
+      "cetirizine",
+      "antihistamin"
+    ],
+    "synonyms_id": [
+      "biduran",
+      "kaligata",
+      "bentol-bentol merah gatal"
+    ],
+    "severity_indicators": [
+      "Wheals eritema gatal hilang timbul < 24 jam per lesi"
+    ],
+    "typical_vitals": [
+      "Tanda vital stabil, pastikan tidak ada stridor/sesak napas (anafilaksis)"
+    ],
+    "dagger_asterisk": null
+  },
+  {
+    "code": "H10.9",
+    "title": "Unspecified conjunctivitis",
+    "title_id": "Konjungtivitis tidak spesifik (mata merah)",
+    "chapter": "VII",
+    "block": "H10-H13",
+    "is_fktp_144": true,
+    "is_symptom_code": false,
+    "can_be_primary": true,
+    "includes": [
+      "Pink eye",
+      "Conjunctivitis NOS"
+    ],
+    "excludes": [
+      "Keratoconjunctivitis (H16.2)"
+    ],
+    "clinical_keywords": [
+      "konjungtivitis",
+      "mata merah belekan",
+      "sekret mata kotoran mata",
+      "injeksi konjungtiva",
+      "mata mengganjal",
+      "kloramfenikol tetes mata"
+    ],
+    "synonyms_id": [
+      "mata merah",
+      "belekan",
+      "beleken"
+    ],
+    "severity_indicators": [
+      "Hiperemia konjungtiva bulbi dan palpebra, sekret serosa/mukopurulen, visus normal"
+    ],
+    "typical_vitals": [
+      "Normal"
+    ],
+    "dagger_asterisk": null
+  },
+  {
+    "code": "N39.0",
+    "title": "Urinary tract infection site not specified",
+    "title_id": "Infeksi saluran kemih (ISK)",
+    "chapter": "XIV",
+    "block": "N30-N39",
+    "is_fktp_144": true,
+    "is_symptom_code": false,
+    "can_be_primary": true,
+    "includes": [
+      "Pyuria NOS",
+      "UTI NOS"
+    ],
+    "excludes": [
+      "Acute pyelonephritis (N10)"
+    ],
+    "clinical_keywords": [
+      "isk",
+      "infeksi saluran kemih",
+      "anyang-anyangan",
+      "nyeri saat kencing disuria",
+      "kencing perih",
+      "kencing sering sedikit-sedikit",
+      "nyeri suprapubik",
+      "leukosituria",
+      "nitrit positif"
+    ],
+    "synonyms_id": [
+      "anyang-anyangan",
+      "kencing sakit perih",
+      "infeksi kencing"
+    ],
+    "severity_indicators": [
+      "Disuria, frekuensi, urgensi, leukosit urine > 5/LPB"
+    ],
+    "typical_vitals": [
+      "Suhu afebris atau subfebris ringan"
+    ],
+    "dagger_asterisk": null
+  },
+  {
+    "code": "B34.9",
+    "title": "Viral infection unspecified",
+    "title_id": "Infeksi virus tidak spesifik",
+    "chapter": "I",
+    "block": "B25-B34",
+    "is_fktp_144": true,
+    "is_symptom_code": false,
+    "can_be_primary": true,
+    "includes": [
+      "Viraemia NOS",
+      "Viral syndrome NOS"
+    ],
+    "excludes": [
+      "Specified viral disease (A80-B34)"
+    ],
+    "clinical_keywords": [
+      "infeksi virus",
+      "viral infection",
+      "febris suspect viral",
+      "demam akut hari ke-1 2",
+      "leukopenia",
+      "limfositosis relatif"
+    ],
+    "synonyms_id": [
+      "infeksi virus",
+      "panas meriang virus"
+    ],
+    "severity_indicators": [
+      "Sindrom demam akut tanpa tanda bahaya spesifik"
+    ],
+    "typical_vitals": [
+      "Suhu 37.8 - 38.8°C"
+    ],
+    "dagger_asterisk": null
+  },
+  {
+    "code": "I25.10",
+    "title": "Atherosclerotic heart disease of native coronary artery",
+    "title_id": "Penyakit jantung koroner (PJK) / aterosklerotik",
+    "chapter": "IX",
+    "block": "I20-I25",
+    "is_fktp_144": false,
+    "is_symptom_code": false,
+    "can_be_primary": true,
+    "includes": [
+      "Coronary artery disease (CAD)",
+      "CHD",
+      "Coronary atherosclerosis"
+    ],
+    "excludes": [
+      "Acute myocardial infarction (I21.-)"
+    ],
+    "clinical_keywords": [
+      "pjk",
+      "penyakit jantung koroner",
+      "cad",
+      "angina pektoris stabil",
+      "nyeri dada kiri menjalar ke bahu",
+      "dada tertindih beban berat",
+      "isdn",
+      "aspirin",
+      "ekg iskemia"
+    ],
+    "synonyms_id": [
+      "penyakit jantung koroner",
+      "angin duduk",
+      "penyumbatan pembuluh jantung"
+    ],
+    "severity_indicators": [
+      "Nyeri dada retrosternal khas tipikal angina > 5 menit saat aktivitas"
+    ],
+    "typical_vitals": [
+      "TD bervariasi",
+      "Nadi normal/ireguler"
+    ],
+    "dagger_asterisk": null
+  },
+  {
+    "code": "I50.9",
+    "title": "Heart failure unspecified",
+    "title_id": "Gagal jantung tidak spesifik (CHF)",
+    "chapter": "IX",
+    "block": "I50",
+    "is_fktp_144": false,
+    "is_symptom_code": false,
+    "can_be_primary": true,
+    "includes": [
+      "Congestive heart failure (CHF)",
+      "Cardiac failure NOS",
+      "Myocardial failure"
+    ],
+    "excludes": [
+      "Neonatal cardiac failure (P29.0)"
+    ],
+    "clinical_keywords": [
+      "gagal jantung",
+      "chf",
+      "sesak napas saat berbaring ortopnea",
+      "pnd sesak malam terbangun",
+      "edema kaki kedua tungkai",
+      "jvp meningkat",
+      "kardiomegali",
+      "ronki basah basal paru",
+      "furosemide"
+    ],
+    "synonyms_id": [
+      "gagal jantung",
+      "jantung bengkak sesak",
+      "payah jantung"
+    ],
+    "severity_indicators": [
+      "Kriteria Framingham gagal jantung mayor (PND, kardiomegali, ronki)"
+    ],
+    "typical_vitals": [
+      "Takipnea RR > 24x/menit",
+      "Takikardia",
+      "SpO2 < 95%"
+    ],
+    "dagger_asterisk": null
+  },
+  {
+    "code": "R05",
+    "title": "Cough",
+    "title_id": "Batuk simtomatik",
+    "chapter": "XVIII",
+    "block": "R00-R09",
+    "is_fktp_144": false,
+    "is_symptom_code": true,
+    "can_be_primary": false,
+    "includes": [
+      "Cough with or without sputum"
+    ],
+    "excludes": [
+      "Cough with pulmonary tuberculosis (A15.-)",
+      "Psychogenic cough (F45.3)"
+    ],
+    "clinical_keywords": [
+      "batuk",
+      "cough",
+      "batuk kering",
+      "batuk berdahak simtomatik",
+      "keluhan batuk"
+    ],
+    "synonyms_id": [
+      "batuk",
+      "uhuk-uhuk"
+    ],
+    "severity_indicators": [
+      "Gejala batuk tanpa konfirmasi etiologi"
+    ],
+    "typical_vitals": [
+      "Normal"
+    ],
+    "dagger_asterisk": null
+  },
+  {
+    "code": "R11.0",
+    "title": "Nausea",
+    "title_id": "Mual simtomatik",
+    "chapter": "XVIII",
+    "block": "R10-R19",
+    "is_fktp_144": false,
+    "is_symptom_code": true,
+    "can_be_primary": false,
+    "includes": [
+      "Queasiness"
+    ],
+    "excludes": [
+      "Nausea and vomiting in pregnancy (O21.-)"
+    ],
+    "clinical_keywords": [
+      "mual",
+      "nausea",
+      "enek",
+      "ingin muntah"
+    ],
+    "synonyms_id": [
+      "mual",
+      "enek di perut"
+    ],
+    "severity_indicators": [
+      "Rasa mual simtomatik"
+    ],
+    "typical_vitals": [
+      "Normal"
+    ],
+    "dagger_asterisk": null
+  },
+  {
+    "code": "R11.10",
+    "title": "Vomiting unspecified",
+    "title_id": "Muntah simtomatik tidak spesifik",
+    "chapter": "XVIII",
+    "block": "R10-R19",
+    "is_fktp_144": false,
+    "is_symptom_code": true,
+    "can_be_primary": false,
+    "includes": [
+      "Emesis NOS"
+    ],
+    "excludes": [
+      "Hematemesis (K92.0)",
+      "Vomiting in pregnancy (O21.-)"
+    ],
+    "clinical_keywords": [
+      "muntah",
+      "vomiting",
+      "isi makanan keluar",
+      "muntah berulang"
+    ],
+    "synonyms_id": [
+      "muntah",
+      "isi lambung keluar"
+    ],
+    "severity_indicators": [
+      "Frekuensi muntah dan risiko dehidrasi"
+    ],
+    "typical_vitals": [
+      "Normal"
+    ],
+    "dagger_asterisk": null
+  },
+  {
+    "code": "R42",
+    "title": "Dizziness and giddiness",
+    "title_id": "Pusing dan pening (Dizziness / Vertigo ringan simtomatik)",
+    "chapter": "XVIII",
+    "block": "R40-R46",
+    "is_fktp_144": false,
+    "is_symptom_code": true,
+    "can_be_primary": false,
+    "includes": [
+      "Light-headedness",
+      "Vertigo NOS"
+    ],
+    "excludes": [
+      "Meniere disease (H81.0)",
+      "BPPV (H81.1)"
+    ],
+    "clinical_keywords": [
+      "pusing",
+      "kliyengan",
+      "pening",
+      "dizziness",
+      "kepala melayang"
+    ],
+    "synonyms_id": [
+      "pusing melayang",
+      "kliyengan",
+      "oyong"
+    ],
+    "severity_indicators": [
+      "Sensasi tidak seimbang tanpa nistagmus patologis"
+    ],
+    "typical_vitals": [
+      "Normal"
+    ],
+    "dagger_asterisk": null
+  },
+  {
+    "code": "D64.9",
+    "title": "Anemia unspecified",
+    "title_id": "Anemia tidak spesifik (kurang darah)",
+    "chapter": "III",
+    "block": "D50-D64",
+    "is_fktp_144": true,
+    "is_symptom_code": false,
+    "can_be_primary": true,
+    "includes": [
+      "Anaemia NOS",
+      "Oligocythaemia"
+    ],
+    "excludes": [
+      "Aplastic anaemia (D60-D61)",
+      "Iron deficiency anaemia (D50.-)"
+    ],
+    "clinical_keywords": [
+      "anemia",
+      "hb rendah",
+      "kurang darah",
+      "pucat",
+      "konjungtiva anemis",
+      "lemas letih lesu",
+      "5l",
+      "hb < 10",
+      "hb < 12",
+      "sulfas ferrosus"
+    ],
+    "synonyms_id": [
+      "kurang darah",
+      "pucat lemas",
+      "anemia"
+    ],
+    "severity_indicators": [
+      "Hb < 10 g/dL (Ringan-Sedang)",
+      "Hb < 7 g/dL (Berat)"
+    ],
+    "typical_vitals": [
+      "Konjungtiva pucat (+)",
+      "Takikardia kompensasi"
+    ],
+    "dagger_asterisk": null
+  },
+  {
+    "code": "E03.9",
+    "title": "Hypothyroidism unspecified",
+    "title_id": "Hipotiroidisme tidak spesifik",
+    "chapter": "IV",
+    "block": "E00-E07",
+    "is_fktp_144": false,
+    "is_symptom_code": false,
+    "can_be_primary": true,
+    "includes": [
+      "Myxoedema NOS",
+      "Hypothyroidism NOS"
+    ],
+    "excludes": [
+      "Congenital hypothyroidism (E00.-)"
+    ],
+    "clinical_keywords": [
+      "hipotiroid",
+      "tsh tinggi",
+      "ft4 rendah",
+      "mudah kedinginan",
+      "berat badan naik tanpa sebab",
+      "kulit kering kasar",
+      "bradikardia",
+      "lemas lambat",
+      "levotiroksin"
+    ],
+    "synonyms_id": [
+      "kurang hormon tiroid",
+      "hipotiroid"
+    ],
+    "severity_indicators": [
+      "TSH meningkat dengan FT4 rendah"
+    ],
+    "typical_vitals": [
+      "Bradikardia Nadi < 60x/menit"
+    ],
+    "dagger_asterisk": null
+  },
+  {
+    "code": "E05.90",
+    "title": "Thyrotoxicosis without mentions of thyrotoxic crisis",
+    "title_id": "Tirotoksikosis (Hipertiroid) tanpa krisis tiroid",
+    "chapter": "IV",
+    "block": "E00-E07",
+    "is_fktp_144": false,
+    "is_symptom_code": false,
+    "can_be_primary": true,
+    "includes": [
+      "Hyperthyroidism NOS",
+      "Thyrotoxicosis NOS"
+    ],
+    "excludes": [
+      "With thyroid storm (E05.91)"
+    ],
+    "clinical_keywords": [
+      "hipertiroid",
+      "tirotoksikosis",
+      "tsh rendah",
+      "ft4 tinggi",
+      "berdebar-debar takikardia",
+      "tidak tahan panas",
+      "berat badan turun banyak makan",
+      "tremor tangan",
+      "benjolan tiroid gondok",
+      "eksoftalmus",
+      "ptiluracil"
+    ],
+    "synonyms_id": [
+      "kelebihan hormon tiroid",
+      "hipertiroid",
+      "gondok beracun"
+    ],
+    "severity_indicators": [
+      "Takikardia istirahat > 100x/menit",
+      "Tremor halus jari tangan"
+    ],
+    "typical_vitals": [
+      "Nadi takikardia > 100x/menit",
+      "Tekanan nadi lebar"
+    ],
+    "dagger_asterisk": null
+  },
+  {
+    "code": "M10.9",
+    "title": "Gout unspecified",
+    "title_id": "Artritis gout (asam urat)",
+    "chapter": "XIII",
+    "block": "M10",
+    "is_fktp_144": true,
+    "is_symptom_code": false,
+    "can_be_primary": true,
+    "includes": [
+      "Gouty arthritis NOS",
+      "Urate gout"
+    ],
+    "excludes": [
+      "Lead-induced gout (M10.1)"
+    ],
+    "clinical_keywords": [
+      "asam urat",
+      "artritis gout",
+      "podagra",
+      "nyeri bengkak jempol kaki merah",
+      "mtp 1 bengkak panas",
+      "asam urat darah > 7",
+      "tofus",
+      "allopurinol",
+      "kolkisin"
+    ],
+    "synonyms_id": [
+      "asam urat",
+      "radang sendi jempol kaki",
+      "penyakit gout"
+    ],
+    "severity_indicators": [
+      "Inflamasi akut sendi MTP-1 (eritema, bengkak, sangat nyeri disentuh)"
+    ],
+    "typical_vitals": [
+      "Normal, tanda radang lokal (+): rubor, kalor, dolor, tumor"
+    ],
+    "dagger_asterisk": null
+  },
+  {
+    "code": "M19.90",
+    "title": "Unspecified osteoarthritis unspecified site",
+    "title_id": "Osteoartritis (pengapuran sendi)",
+    "chapter": "XIII",
+    "block": "M15-M19",
+    "is_fktp_144": true,
+    "is_symptom_code": false,
+    "can_be_primary": true,
+    "includes": [
+      "Arthrosis NOS",
+      "Degenerative joint disease",
+      "Osteoarthrosis NOS"
+    ],
+    "excludes": [
+      "Spine osteoarthritis (M47.-)"
+    ],
+    "clinical_keywords": [
+      "osteoartritis",
+      "oa lutut",
+      "pengapuran sendi",
+      "krepitasi sendi",
+      "kaku sendi pagi hari < 30 menit",
+      "nyeri lutut saat berdiri naik tangga",
+      "penyempitan celah sendi",
+      "osteofit",
+      "kondroitin glukosamin"
+    ],
+    "synonyms_id": [
+      "pengapuran sendi",
+      "oa lutut",
+      "radang sendi usia tua"
+    ],
+    "severity_indicators": [
+      "Krepitasi saat digerakkan (+)",
+      "Nyeri mekanik berhubungan dengan beban sendi"
+    ],
+    "typical_vitals": [
+      "Normal"
+    ],
+    "dagger_asterisk": null
+  },
+  {
+    "code": "Z00.00",
+    "title": "Encounter for general adult medical examination",
+    "title_id": "Pemeriksaan kesehatan umum dewasa (Medical Check Up)",
+    "chapter": "XXI",
+    "block": "Z00-Z13",
+    "is_fktp_144": true,
+    "is_symptom_code": false,
+    "can_be_primary": false,
+    "includes": [
+      "General adult medical examination NOS",
+      "Annual physical examination",
+      "Routine health check-up"
+    ],
+    "excludes": [
+      "Special screening examination (Z11-Z13)"
+    ],
+    "clinical_keywords": [
+      "general check up",
+      "mcu",
+      "pemeriksaan kesehatan rutin",
+      "kontrol rutin tanpa keluhan",
+      "surat keterangan sehat",
+      "uji kesehatan fisik"
+    ],
+    "synonyms_id": [
+      "check up kesehatan",
+      "pemeriksaan kesehatan",
+      "tes sehat"
+    ],
+    "severity_indicators": [
+      "Tidak ada keluhan akut spesifik"
+    ],
+    "typical_vitals": [
+      "Tanda vital dalam batas normal"
+    ],
+    "dagger_asterisk": null
+  }
+]

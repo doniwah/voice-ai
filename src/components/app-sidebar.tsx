@@ -9,6 +9,7 @@ import {
   Users,
   ChevronLeft,
   ChevronRight,
+  LogOut,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -197,24 +198,50 @@ export function AppSidebar() {
         )}
       </div>
 
-      {/* Hospital Footer */}
+      {/* Hospital Footer & Logout */}
       {isCollapsed ? (
-        <div
-          className="flex items-center justify-center border-t border-white/10 px-2 py-4"
-          title="RS Medika Utama • Jakarta Selatan"
-        >
-          <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-white/10 text-xs font-bold text-white">
+        <div className="flex flex-col items-center gap-2 border-t border-white/10 px-2 py-4">
+          <div
+            className="flex h-9 w-9 items-center justify-center rounded-lg bg-white/10 text-xs font-bold text-white"
+            title="RS Medika Utama • Jakarta Selatan"
+          >
             RS
           </div>
+          <button
+            type="button"
+            onClick={() => {
+              localStorage.removeItem("soapi_auth");
+              window.location.href = "/login";
+            }}
+            title="Keluar"
+            className="flex h-8 w-8 items-center justify-center rounded-lg text-rose-400 hover:bg-rose-500/20 transition-colors cursor-pointer"
+          >
+            <LogOut className="h-4 w-4" />
+          </button>
         </div>
       ) : (
-        <div className="flex items-center gap-3 border-t border-white/10 px-5 py-4">
-          <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-white/10 text-xs font-bold text-white">
-            RS
-          </div>
-          <div className="min-w-0">
-            <p className="text-sm font-semibold text-white truncate">RS Medika Utama</p>
-            <p className="text-xs text-navy-foreground/60 truncate">Jakarta Selatan</p>
+        <div className="border-t border-white/10 px-4 py-3">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-2.5 min-w-0">
+              <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-white/10 text-xs font-bold text-white">
+                RS
+              </div>
+              <div className="min-w-0">
+                <p className="text-xs font-semibold text-white truncate">RS Medika Utama</p>
+                <p className="text-[10px] text-navy-foreground/60 truncate">Jakarta Selatan</p>
+              </div>
+            </div>
+            <button
+              type="button"
+              onClick={() => {
+                localStorage.removeItem("soapi_auth");
+                window.location.href = "/login";
+              }}
+              title="Keluar dari sistem"
+              className="flex h-8 w-8 items-center justify-center rounded-lg text-rose-400 hover:bg-rose-500/20 transition-colors cursor-pointer shrink-0"
+            >
+              <LogOut className="h-4 w-4" />
+            </button>
           </div>
         </div>
       )}
