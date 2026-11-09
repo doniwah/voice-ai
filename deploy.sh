@@ -65,7 +65,7 @@ fi
 
 # 7. Uji Web Application
 echo "🔍 Menguji Web Frontend (port 3000)..."
-if curl -s -I http://127.0.0.1:3000 | grep -E -q "HTTP/1.1 (200|302|301|307|308)"; then
+if curl -s -o /dev/null -w "%{http_code}" http://127.0.0.1:3000 | grep -E -q "(200|301|302|307|308)"; then
   echo "✅ Web Application SEHAT & AKTIF!"
 else
   echo "⚠️ Web App sedang proses inisialisasi, cek log: docker logs soapi-web"
