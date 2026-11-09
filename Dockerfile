@@ -5,13 +5,14 @@ FROM node:20-alpine AS builder
 
 WORKDIR /app
 
-ENV NITRO_PRESET=node-server
+ENV NODE_ENV=production \
+    NITRO_PRESET=node-server
 
 COPY package*.json ./
 RUN npm ci
 
 COPY . .
-RUN NITRO_PRESET=node-server npm run build
+RUN npm run build
 
 # ------------------------------------------------------------------------------
 # Production Runner
