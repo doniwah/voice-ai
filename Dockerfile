@@ -5,14 +5,15 @@ FROM node:20-alpine AS builder
 
 WORKDIR /app
 
-ENV NODE_ENV=production \
-    NITRO_PRESET=node-server
+ENV NITRO_PRESET=node-server
 
 COPY package*.json ./
-RUN npm ci
+# Install seluruh dependencies termasuk devDependencies (Vite, Nitro, Lovable config) untuk build
+RUN npm ci --include=dev
 
 COPY . .
-RUN npm run build
+# Jalankan build dengan NODE_ENV=production agar JSX menggunakan production runtime (bukan jsxDEV)
+RUN NODE_ENV=production NITRO_PRESET=node-server npm run build
 
 # ------------------------------------------------------------------------------
 # Production Runner
