@@ -195,6 +195,17 @@ function RiwayatCatatan() {
   const [search, setSearch] = useState("");
   const [selectedRecord, setSelectedRecord] = useState<ConsultationRecord | null>(null);
 
+  // Mark all consultation records as viewed upon opening page
+  useEffect(() => {
+    try {
+      localStorage.setItem("soapi_riwayat_viewed", "true");
+      localStorage.setItem("soapi_unread_count", "0");
+      window.dispatchEvent(new Event("soapi_notes_viewed"));
+    } catch {
+      // Ignore
+    }
+  }, []);
+
   // Fetch real database clinical notes on mount
   useEffect(() => {
     fetch("/api/clinical-notes")

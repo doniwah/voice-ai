@@ -518,6 +518,16 @@ function VoiceScribe() {
         }
 
         setProcessingStep(4); // Finished
+        try {
+          const current = parseInt(localStorage.getItem("soapi_unread_count") || "0", 10) || 0;
+          localStorage.setItem("soapi_unread_count", String(current + 1));
+          localStorage.removeItem("soapi_riwayat_viewed");
+          window.dispatchEvent(
+            new StorageEvent("storage", { key: "soapi_unread_count", newValue: String(current + 1) }),
+          );
+        } catch {
+          // Ignore
+        }
         toast.success(
           processRes.engine === "gemini-2.5-flash"
             ? "✨ AI Gemini berhasil memilah suara Dokter & Pasien dan menyusun SOAPI!"

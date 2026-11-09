@@ -13,7 +13,15 @@ import {
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
-const menuItems = [
+interface MenuItem {
+  title: string;
+  url: string;
+  icon: any;
+  exact: boolean;
+  badge?: number | null;
+}
+
+const menuItems: MenuItem[] = [
   { title: "Dashboard", url: "/", icon: LayoutGrid, exact: true },
   { title: "Daftar Pasien", url: "/pasien", icon: Users, exact: false },
   { title: "Voice Scribe", url: "/voice-scribe", icon: Mic, exact: false },
@@ -22,7 +30,6 @@ const menuItems = [
     url: "/riwayat-catatan",
     icon: FileText,
     exact: false,
-    badge: 3,
   },
   { title: "Pengaturan", url: "/pengaturan", icon: Settings, exact: false },
 ];
@@ -33,6 +40,53 @@ export function AppSidebar() {
   });
 
   const [isCollapsed, setIsCollapsed] = useState(false);
+  const [unreadCount, setUnreadCount] = useState<number>(0);
+
+  // Synchronize viewed state: whenever user views /riwayat-catatan, mark as viewed and remove badge number
+  useEffect(() => {
+    if (pathname.startsWith("/riwayat-catatan")) {
+      try {
+        localStorage.setItem("soapi_riwayat_viewed", "true");
+        localStorage.setItem("soapi_unread_count", "0");
+      } catch {
+        // Ignore
+      }
+      setUnreadCount(0);
+    } else {
+      try {
+        const isViewed = localStorage.getItem("soapi_riwayat_viewed");
+        if (isViewed === "true") {
+          setUnreadCount(0);
+        } else {
+          const raw = localStorage.getItem("soapi_unread_count");
+          setUnreadCount(raw ? parseInt(raw, 10) || 0 : 0);
+        }
+      } catch {
+        setUnreadCount(0);
+      }
+    }
+  }, [pathname]);
+
+  // Listen to cross-component events if notes are marked viewed or updated
+  useEffect(() => {
+    const handleNotesViewed = () => {
+      setUnreadCount(0);
+    };
+    const handleStorageChange = (e: StorageEvent) => {
+      if (e.key === "soapi_riwayat_viewed" && e.newValue === "true") {
+        setUnreadCount(0);
+      } else if (e.key === "soapi_unread_count") {
+        setUnreadCount(e.newValue ? parseInt(e.newValue, 10) || 0 : 0);
+      }
+    };
+
+    window.addEventListener("soapi_notes_viewed", handleNotesViewed);
+    window.addEventListener("storage", handleStorageChange);
+    return () => {
+      window.removeEventListener("soapi_notes_viewed", handleNotesViewed);
+      window.removeEventListener("storage", handleStorageChange);
+    };
+  }, []);
 
   // Restore collapsed preference from localStorage
   useEffect(() => {
@@ -123,6 +177,12 @@ export function AppSidebar() {
       <nav className={cn("flex flex-col gap-1.5", isCollapsed ? "px-2" : "px-3")}>
         {menuItems.map((item) => {
           const isActive = item.exact ? pathname === "/" : pathname.startsWith(item.url);
+          const displayBadge =
+            item.url === "/riwayat-catatan"
+              ? unreadCount > 0
+                ? unreadCount
+                : null
+              : item.badge;
 
           if (isCollapsed) {
             return (
@@ -131,6 +191,17 @@ export function AppSidebar() {
                 to={item.url}
                 title={item.title}
                 activeOptions={{ exact: item.exact }}
+                onClick={() => {
+                  if (item.url === "/riwayat-catatan") {
+                    setUnreadCount(0);
+                    try {
+                      localStorage.setItem("soapi_riwayat_viewed", "true");
+                      localStorage.setItem("soapi_unread_count", "0");
+                    } catch {
+                      // Ignore
+                    }
+                  }
+                }}
                 className={cn(
                   "relative flex h-11 w-11 items-center justify-center rounded-xl mx-auto text-sm font-medium transition-colors",
                   isActive
@@ -139,9 +210,9 @@ export function AppSidebar() {
                 )}
               >
                 <item.icon className="h-5 w-5 shrink-0" />
-                {item.badge ? (
+                {displayBadge ? (
                   <span className="absolute -top-1 -right-1 flex h-4 min-w-4 items-center justify-center rounded-full bg-amber-400 px-1 text-[10px] font-bold text-navy">
-                    {item.badge}
+                    {displayBadge}
                   </span>
                 ) : null}
                 <span className="sr-only">{item.title}</span>
@@ -154,6 +225,17 @@ export function AppSidebar() {
               key={item.url}
               to={item.url}
               activeOptions={{ exact: item.exact }}
+              onClick={() => {
+                if (item.url === "/riwayat-catatan") {
+                  setUnreadCount(0);
+                  try {
+                    localStorage.setItem("soapi_riwayat_viewed", "true");
+                    localStorage.setItem("soapi_unread_count", "0");
+                  } catch {
+                    // Ignore
+                  }
+                }
+              }}
               className={cn(
                 "flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors",
                 isActive
@@ -163,9 +245,9 @@ export function AppSidebar() {
             >
               <item.icon className="h-[18px] w-[18px] shrink-0" />
               <span className="flex-1">{item.title}</span>
-              {item.badge ? (
+              {displayBadge ? (
                 <span className="flex h-5 min-w-5 items-center justify-center rounded-full bg-amber-400 px-1.5 text-[11px] font-bold text-navy">
-                  {item.badge}
+                  {displayBadge}
                 </span>
               ) : null}
             </Link>
