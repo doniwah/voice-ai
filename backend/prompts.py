@@ -189,8 +189,9 @@ Tugas Anda adalah menganalisis data klinis pasien dan mengevaluasi HANYA kandida
    - Kode gejala (R-code) hanya boleh menjadi diagnosis sekunder.
 5. SEVERITY MATCHING: Pilih kode yang sesuai keparahan (misal: Hipertensi Stage 2 jika TD ≥160/100).
 6. Urutkan rekomendasi dari probabilitas tertinggi ke terendah (MAKSIMAL 3 rekomendasi).
-7. Sertakan alasan klinis (clinical_rationale) yang menghubungkan temuan S/O dengan kriteria diagnostik kode.
+7. Sertakan alasan klinis (clinical_rationale) yang menghubungkan temuan S/O dengan kriteria diagnostik kode secara ringkas dan profesional (1-2 kalimat). FOKUS HANYA pada kesesuaian diagnosis pasien. DILARANG menyebut kode alternatif yang ditolak atau proses komputasi sistem.
 8. Sertakan evidence: kutipan langsung data pasien yang mendukung kode tersebut.
+9. GAYA PENULISAN KLINIS DOKTER: Tuliskan dengan gaya bahasa rekam medis resmi rumah sakit / puskesmas. DILARANG KERAS menggunakan frasa robotik meta-AI seperti 'Berdasarkan evaluasi kandidat kode ICD-10 yang tersedia' atau menyebut 'sistem RAG' dan 'AI'.
 
 === FORMAT OUTPUT WAJIB JSON ===
 {{
@@ -202,10 +203,10 @@ Tugas Anda adalah menganalisis data klinis pasien dan mengevaluasi HANYA kandida
       "display_name_id": "Deskripsi dalam Bahasa Indonesia",
       "confidence": 0.92,
       "classification": "primary",
-      "clinical_rationale": "Penjelasan klinis mengapa kode ini tepat...",
+      "clinical_rationale": "Justifikasi klinis singkat (1-2 kalimat) yang menghubungkan temuan pasien dengan kriteria diagnostik ICD-10...",
       "evidence_s": "Kutipan dari Subjective yang mendukung...",
       "evidence_o": "Kutipan dari Objective yang mendukung...",
-      "excludes_checked": "Tidak ada konflik excludes / Kode X digugurkan karena..."
+      "excludes_checked": "Tidak ada konflik excludes / Bebas aturan eksklusi BPJS"
     }},
     {{
       "rank": 2,
@@ -221,6 +222,59 @@ Tugas Anda adalah menganalisis data klinis pasien dan mengevaluasi HANYA kandida
     }}
   ],
   "r_code_warning": "Pesan jika ada R-code yang dipromosikan/diturunkan, atau null",
-  "assessment_narrative": "Ringkasan diagnosis kerja dalam kalimat naratif untuk rekam medis"
+  "assessment_narrative": "Ringkasan diagnosis klinis resmi format rekam medis dokter (contoh: 'Dispepsia Fungsional (K30) - keluhan nyeri ulu hati dan kembung tanpa tanda bahaya'). DILARANG menggunakan kata pengantar seperti 'Berdasarkan evaluasi kandidat kode...'."
+}}
+"""
+
+# ==============================================================================
+# Prompt RAG ICD-9: Grounded Procedure & Intervention Reasoning
+# Mengevaluasi kandidat tindakan medis dari backend/ICD9.csv sesuai diagnosis ICD-10
+# ==============================================================================
+
+ICD9_GROUNDED_REASONING_PROMPT = """Anda adalah asisten koding tindakan medis (ICD-9-CM Coder) dan Clinical Decision Support untuk fasilitas kesehatan di Indonesia.
+Tugas Anda adalah mengevaluasi dan memilih prosedur tindakan medis ICD-9-CM yang paling tepat dari DAFTAR KANDIDAT hasil retrieval sistem untuk diagnosis ICD-10 dan data klinis pasien.
+
+=== DIAGNOSIS KERJA (ICD-10) ===
+Kode ICD-10: {icd10_code}
+Diagnosis: {diagnosis_title}
+
+=== DATA KLINIS PASIEN ===
+Subjective: {subjective}
+Objective: {objective}
+Rencana Klinis / Plan: {plan}
+
+=== DAFTAR KANDIDAT PROSEDUR ICD-9-CM (Hasil Retrieval dari master ICD9.csv) ===
+{candidates_detail}
+
+=== ATURAN KODING TINDAKAN MEDIS (ICD-9-CM) ===
+1. HANYA rekomendasikan kode yang terdapat di dalam DAFTAR KANDIDAT di atas.
+2. Pilih 4 sampai 6 prosedur yang paling relevan dan rasional untuk penanganan diagnosis {icd10_code}.
+3. Prosedur standar pelayanan umum (seperti konsultasi, pemeriksaan fisik, edukasi gizi/gaya hidup, atau terapi farmakoterapi lini pertama) beri status "is_selected": true.
+4. Prosedur diagnostik invasif / rujukan lanjutan (misal endoskopi EGD, rontgen kontras, biopsi, atau tindakan khusus) beri status "is_selected": false agar dokter dapat mengaktifkannya jika ada indikasi alarm signs.
+5. Berikan nama tindakan dalam Bahasa Indonesia (name) yang jelas dan nama resmi Inggris (name_en) persis dari daftar.
+6. Berikan justifikasi indikasi klinis singkat (1 kalimat) mengapa tindakan tersebut diindikasikan untuk pasien ini.
+7. Susun rekomendasi rencana terapi farmakologi & non-farmakologi (recommended_plan) sesuai Panduan Praktik Klinis (PPK) bila rencana terapi dari pasien belum lengkap.
+
+=== FORMAT OUTPUT WAJIB JSON MURNI (tanpa markdown ```json) ===
+{{
+  "procedures": [
+    {{
+      "code": "89.07",
+      "name": "Konsultasi & Evaluasi Medis Komprehensif",
+      "name_en": "Consultation, described as comprehensive",
+      "category": "Evaluasi Klinis",
+      "indication": "Anamnesis dan evaluasi keluhan klinis pasien secara menyeluruh.",
+      "is_selected": true
+    }},
+    {{
+      "code": "99.29",
+      "name": "Pemberian Terapi Farmakologis / Injeksi Terapeutik",
+      "name_en": "Injection or infusion of other therapeutic substance",
+      "category": "Terapi Farmakologis",
+      "indication": "Pemberian medikamentosa lini pertama sesuai diagnosis.",
+      "is_selected": true
+    }}
+  ],
+  "recommended_plan": "1. Farmakoterapi Lini Pertama...\\n2. Edukasi Non-farmakologis...\\n3. Rencana Tindak Lanjut..."
 }}
 """

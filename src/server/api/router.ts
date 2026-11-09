@@ -798,6 +798,50 @@ export async function handleApiRequest(request: Request): Promise<Response | nul
       }
     }
 
+    // 12. Rekomendasi Tindakan Medis ICD-9-CM sesuai Diagnosis ICD-10
+    if (path === "/api/recommend-icd9" && method === "POST") {
+      const body = await request.json();
+      const fastapiUrl = process.env.FASTAPI_URL || "http://127.0.0.1:8000";
+      try {
+        const resp = await fetch(`${fastapiUrl}/recommend-icd9`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(body),
+        });
+        const data = await resp.json();
+        return jsonResponse(data, resp.status);
+      } catch (err: any) {
+        return jsonResponse(
+          {
+            success: false,
+            error: `Gagal menghubungi layanan ICD-9 di ${fastapiUrl}: ${err?.message || err}. Pastikan uvicorn backend.main:app berjalan di port 8000.`,
+          },
+          503,
+        );
+      }
+    }
+
+    // 13. Pencarian Master ICD-9-CM
+    if (path === "/api/search-icd9" && method === "GET") {
+      const url = new URL(request.url);
+      const q = url.searchParams.get("q") || "";
+      const limit = url.searchParams.get("limit") || "15";
+      const fastapiUrl = process.env.FASTAPI_URL || "http://127.0.0.1:8000";
+      try {
+        const resp = await fetch(`${fastapiUrl}/search-icd9?q=${encodeURIComponent(q)}&limit=${encodeURIComponent(limit)}`);
+        const data = await resp.json();
+        return jsonResponse(data, resp.status);
+      } catch (err: any) {
+        return jsonResponse(
+          {
+            success: false,
+            error: `Gagal menghubungi pencarian ICD-9 di ${fastapiUrl}: ${err?.message || err}.`,
+          },
+          503,
+        );
+      }
+    }
+
     return null; // Not an API route handled by this router
   } catch (error: unknown) {
     console.error("❌ API Router Error:", error);

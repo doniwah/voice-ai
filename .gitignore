@@ -31,3 +31,14 @@ dist-ssr
 *.sln
 *.sw?
 .env
+
+# Python & Large Conversion Artifacts
+__pycache__/
+*.pyc
+.venv/
+backend/codes.csv
+backend/icd10_knowledge_full.json
+backend/icd10_knowledge_id.json
+backend/convert_icd.py
+backend/translate_icd.py
+

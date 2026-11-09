@@ -15,7 +15,10 @@ export const dbPool = new Pool({
   idleTimeoutMillis: serverEnv.DB_POOL_IDLE_TIMEOUT_MS,
   connectionTimeoutMillis: serverEnv.DB_POOL_CONNECTION_TIMEOUT_MS,
   ssl:
-    serverEnv.NODE_ENV === "production" && !serverEnv.DATABASE_URL.includes("localhost")
+    serverEnv.NODE_ENV === "production" &&
+    !serverEnv.DATABASE_URL.includes("localhost") &&
+    !serverEnv.DATABASE_URL.includes("@postgres") &&
+    !serverEnv.DATABASE_URL.includes("sslmode=disable")
       ? { rejectUnauthorized: false }
       : false,
 });

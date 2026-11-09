@@ -78,7 +78,7 @@ def get_embedding_model() -> Any:
         SentenceTransformer model atau None jika gagal dimuat.
     """
     global _embedding_model, _embedding_model_failed
-    if _embedding_model_failed:
+    if _embedding_model_failed or os.getenv("DISABLE_TORCH_EMBEDDINGS", "1") == "1":
         return None
     if _embedding_model is None:
         try:
@@ -111,7 +111,7 @@ def get_cross_encoder_model() -> Any:
         CrossEncoder model atau None jika gagal dimuat.
     """
     global _cross_encoder_model, _cross_encoder_model_failed
-    if _cross_encoder_model_failed:
+    if _cross_encoder_model_failed or os.getenv("DISABLE_TORCH_EMBEDDINGS", "1") == "1":
         return None
     if _cross_encoder_model is None:
         try:
@@ -520,20 +520,56 @@ def _extract_entities_fallback(subjective: str, objective: str) -> dict:
 # ==============================================================================
 
 
+_TEMPORAL_STOPWORDS = {
+    "hari", "minggu", "bulan", "tahun", "jam", "menit", "detik",
+    "kali", "sejak", "selama", "sudah", "kurang", "lebih", "sekitar",
+    "pasien", "mengeluh", "mengeluhkan", "datang", "dengan", "keluhan",
+    "yang", "pada", "dan", "atau", "tidak", "ada", "bisa", "lalu",
+    "terasa", "merasa", "karena", "untuk", "dari", "dalam", "ini"
+}
+
+_ORGAN_SYSTEM_MAP = {
+    "perut": ["K30", "K29.7", "R10.4", "A09", "K21.9"],
+    "abdomen": ["K30", "K29.7", "R10.4", "A09", "K21.9"],
+    "lambung": ["K30", "K29.7", "K21.9", "R10.4"],
+    "maag": ["K29.7", "K30"],
+    "ulu hati": ["K29.7", "K30", "R10.4"],
+    "epigastrium": ["K30", "K29.7", "R10.4"],
+    "sendi": ["M25.5", "M19.9", "M10.9"],
+    "persendian": ["M25.5", "M19.9", "M10.9"],
+    "artralgia": ["M25.5"],
+    "lutut": ["M25.5", "M19.9"],
+    "punggung": ["M54.5"],
+    "pinggang": ["M54.5"],
+    "otot": ["M79.1"],
+    "kepala": ["R51", "G43.9", "G44.2"],
+    "migrain": ["G43.9"],
+    "dada": ["I25.1", "I10", "I50.9"],
+    "sesak": ["J45.9", "J18.9", "J20.9", "I50.9"],
+    "batuk": ["J00", "J06.9", "J20.9", "J45.9", "R05"],
+    "tenggorokan": ["J02.9", "J03.9", "J06.9"],
+    "pilek": ["J00", "J06.9"],
+    "kencing": ["N39.0"],
+    "urin": ["N39.0"],
+    "kulit": ["L20.9", "L50.9"],
+    "gatal": ["L20.9", "L50.9"],
+    "mata": ["H10.9"],
+}
+
+
 def _tokenize(text: str) -> list[str]:
     """
-    Tokenisasi sederhana untuk BM25: lowercasing, split pada non-alfanumerik,
-    filter token pendek.
-
-    Args:
-        text: Teks yang akan ditokenisasi.
-
-    Returns:
-        List token hasil tokenisasi.
+    Tokenisasi klinis cerdas untuk BM25:
+    - Lowercasing & split non-alphanumeric
+    - Filter angka murni (misal '30' dari '30 hari') agar tidak bias ke diagnosis unrelated
+    - Filter stopwords durasi/temporal
     """
     text = text.lower()
     tokens = re.split(r"[^\w]+", text)
-    return [t for t in tokens if len(t) >= 2]
+    return [
+        t for t in tokens
+        if len(t) >= 2 and not t.isdigit() and t not in _TEMPORAL_STOPWORDS
+    ]
 
 
 def hybrid_search(
@@ -614,7 +650,15 @@ def hybrid_search(
         # Jika embedding tidak tersedia, gunakan BM25 saja
         emb_normalized = [0.0] * n
 
-    # Combined: 0.4 * BM25 + 0.6 * Embedding
+    # Anatomic & Clinical Keyword Boost
+    clean_q_lower = query_text.lower()
+    boost_codes: set[str] = set()
+    for organ_term, codes in _ORGAN_SYSTEM_MAP.items():
+        if organ_term in clean_q_lower:
+            for c in codes:
+                boost_codes.add(c)
+
+    # Combined: 0.4 * BM25 + 0.6 * Embedding + Anatomic boost
     combined_scores: list[float] = []
     for i in range(n):
         bm25_part = bm25_normalized[i] if i < len(bm25_normalized) else 0.0
@@ -622,10 +666,15 @@ def hybrid_search(
 
         # Jika embedding tidak tersedia, gunakan BM25 100%
         if not embedding_scores:
-            score = bm25_part
+            base_score = bm25_part
         else:
-            score = 0.4 * bm25_part + 0.6 * emb_part
-        combined_scores.append(score)
+            base_score = 0.4 * bm25_part + 0.6 * emb_part
+
+        entry_code = knowledge_base[i].get("code", "")
+        if entry_code in boost_codes:
+            base_score += 0.5  # Prioritaskan diagnosis pada organ/sistem tubuh yang relevan
+
+        combined_scores.append(base_score)
 
     # Sort berdasarkan combined score descending
     scored_entries = list(zip(combined_scores, range(n)))
@@ -1325,4 +1374,310 @@ async def run_full_pipeline(
         "reasoning_context": reasoning_context,
         "knowledge_base": kb,
         "pipeline_timing": timing,
+    }
+
+
+# ==============================================================================
+# PIPELINE RAG ICD-9-CM: RETRIEVAL & GROUNDED PROCEDURE REASONING
+# Menentukan kode tindakan medis ICD-9-CM dari backend/ICD9.csv
+# berdasarkan diagnosis ICD-10, temuan klinis S+O, dan rencana tata laksana
+# ==============================================================================
+
+ICD9_CSV_PATH = Path(__file__).resolve().parent / "ICD9.csv"
+_icd9_knowledge_base: Optional[list[dict]] = None
+
+
+def load_icd9_knowledge_base() -> list[dict]:
+    """
+    Memuat master knowledge base tindakan medis ICD-9-CM dari backend/ICD9.csv (singleton).
+    Berisi 4626 prosedur tindakan resmi.
+    """
+    global _icd9_knowledge_base
+    if _icd9_knowledge_base is not None:
+        return _icd9_knowledge_base
+
+    if not ICD9_CSV_PATH.exists():
+        logger.warning("File ICD9.csv tidak ditemukan di %s", ICD9_CSV_PATH)
+        return []
+
+    import csv
+    records: list[dict] = []
+    try:
+        with open(ICD9_CSV_PATH, "r", encoding="utf-8") as f:
+            reader = csv.DictReader(f)
+            for r in reader:
+                c = r.get("CODE", "").strip()
+                d = r.get("DISPLAY", "").strip()
+                if c and d:
+                    records.append({
+                        "code": c,
+                        "display": d,
+                        "search_tokens": _tokenize(f"{c} {d}"),
+                    })
+        _icd9_knowledge_base = records
+        logger.info("ICD-9 Knowledge Base berhasil dimuat: %d entri dari ICD9.csv", len(records))
+    except Exception as exc:
+        logger.error("Gagal membaca ICD9.csv: %s", exc)
+
+    return _icd9_knowledge_base or []
+
+
+def retrieve_icd9_candidates(
+    icd10_code: str,
+    diagnosis_title: str,
+    subjective: str = "",
+    objective: str = "",
+    plan: str = "",
+    top_k: int = 20,
+) -> list[dict]:
+    """
+    Langkah Retrieval RAG ICD-9:
+    Melakukan pencarian leksikal (BM25 Okapi) dan ekspansi sinonim klinis
+    pada 4626 kode tindakan medis di backend/ICD9.csv.
+    """
+    kb_icd9 = load_icd9_knowledge_base()
+    if not kb_icd9:
+        return []
+
+    # 1. Ekstraksi kata kunci dari diagnosis ICD-10 dan data klinis
+    combined_query_text = f"{icd10_code} {diagnosis_title} {subjective} {objective} {plan}".lower()
+
+    # Kata kunci ekspansi klinis berdasarkan organ & patologi
+    expansion_terms: list[str] = [
+        "consultation", "evaluation", "examination", "injection", "infusion", "counseling"
+    ]
+
+    c_upper = icd10_code.upper().strip()
+    if any(k in combined_query_text for k in ["dispepsia", "gastritis", "lambung", "maag", "ulu hati", "perut", "k30", "k29"]):
+        expansion_terms.extend([
+            "stomach", "gastric", "endoscopy", "duodenum", "lavage", "nasogastric", "tube", "digestive"
+        ])
+    if any(k in combined_query_text for k in ["hipertensi", "tensi", "tekanan darah", "amlodipine", "i10", "jantung"]):
+        expansion_terms.extend([
+            "cardiac", "heart", "electrocardiogram", "ecg", "blood", "pressure", "monitoring", "vascular"
+        ])
+    if any(k in combined_query_text for k in ["ispa", "faringitis", "batuk", "pilek", "tenggorokan", "j06", "j02", "napas"]):
+        expansion_terms.extend([
+            "respiratory", "pharynx", "nasal", "inhalation", "aerosol", "nebulizer", "lavage", "throat"
+        ])
+    if any(k in combined_query_text for k in ["diabetes", "gula", "glukosa", "dm", "e11"]):
+        expansion_terms.extend([
+            "diabetes", "glucose", "blood", "injection", "insulin", "dietary"
+        ])
+    if any(k in combined_query_text for k in ["diare", "muntah", "gastroenteritis", "a09", "dehidrasi"]):
+        expansion_terms.extend([
+            "electrolyte", "infusion", "rehydration", "saline", "stool"
+        ])
+    if any(k in combined_query_text for k in ["punggung", "nyeri", "sendi", "lumbosakral", "m54", "osteoartritis"]):
+        expansion_terms.extend([
+            "physical", "therapy", "x-ray", "skeletal", "joint", "rehabilitation"
+        ])
+
+    raw_tokens = _tokenize(combined_query_text) + expansion_terms
+    query_tokens = list(dict.fromkeys(raw_tokens))  # deduplikasi preserve order
+
+    # 2. Skoring BM25 Okapi pada master ICD9.csv
+    n_docs = len(kb_icd9)
+    doc_lens = [len(r["search_tokens"]) for r in kb_icd9]
+    avgdl = sum(doc_lens) / n_docs if n_docs > 0 else 1.0
+    k1 = 1.2
+    b = 0.75
+
+    # Hitung Document Frequency (DF)
+    df_map: dict[str, int] = {}
+    for r in kb_icd9:
+        unique_tokens = set(r["search_tokens"])
+        for t in query_tokens:
+            if t in unique_tokens:
+                df_map[t] = df_map.get(t, 0) + 1
+
+    # Hitung IDF
+    idf_map: dict[str, float] = {}
+    for t in query_tokens:
+        df = df_map.get(t, 0)
+        idf_map[t] = math.log((n_docs - df + 0.5) / (df + 0.5) + 1.0)
+
+    # Skoring setiap entri ICD-9
+    scored: list[tuple[float, dict]] = []
+    for r in kb_icd9:
+        score = 0.0
+        r_tokens = r["search_tokens"]
+        r_len = len(r_tokens)
+        code = r["code"]
+        disp_lower = r["display"].lower()
+
+        # Bonus prioritas prosedur standar klinis rawat jalan
+        if code in {"89.07", "89.03"}:
+            score += 15.0
+        elif code in {"89.7"}:
+            score += 12.0
+        elif code in {"99.29", "99.21"}:
+            score += 10.0
+        elif code in {"93.89"}:
+            score += 10.0
+
+        # BM25 lexical match
+        for t in query_tokens:
+            if t in r_tokens:
+                freq = r_tokens.count(t)
+                numerator = freq * (k1 + 1.0)
+                denominator = freq + k1 * (1.0 - b + b * (r_len / avgdl))
+                score += idf_map.get(t, 1.0) * (numerator / denominator)
+
+        # Exact phrase bonus
+        if "dispepsia" in combined_query_text or "k30" in combined_query_text:
+            if code in {"45.13", "45.16", "96.07", "96.35"}:
+                score += 18.0
+        if "hipertensi" in combined_query_text or "i10" in combined_query_text:
+            if code in {"89.52", "89.50", "90.59"}:
+                score += 18.0
+        if "ispa" in combined_query_text or "j06" in combined_query_text or "j02" in combined_query_text:
+            if code in {"93.94", "96.56"}:
+                score += 18.0
+
+        if score > 0:
+            scored.append((score, r))
+
+    # Urutkan berdasarkan skor tertinggi
+    scored.sort(key=lambda x: x[0], reverse=True)
+
+    candidates: list[dict] = []
+    for s, r in scored[:top_k]:
+        candidates.append({
+            "code": r["code"],
+            "display": r["display"],
+            "retrieval_score": round(s, 2),
+        })
+
+    return candidates
+
+
+async def run_icd9_rag_pipeline(
+    icd10_code: str,
+    diagnosis_title: str,
+    subjective: str = "",
+    objective: str = "",
+    plan: str = "",
+    ai_client: Any = None,
+    model_name: str = "",
+) -> dict:
+    """
+    Pipeline RAG Lengkap untuk Prosedur Tindakan Medis ICD-9-CM:
+    Langkah 1: Retrieval — BM25 + Semantic Expansion pada 4626 kode backend/ICD9.csv
+    Langkah 2: Grounded Clinical Reasoning (LLM) — Menentukan 4-6 prosedur & PPK Plan
+    Langkah 3: Deterministic Fallback Guardrails — Memastikan output klinis selalu tersedia
+    """
+    t0 = time.time()
+    timing: dict[str, float] = {}
+
+    logger.info("=" * 60)
+    logger.info("MEMULAI PIPELINE RAG ICD-9-CM (Diagnosis: %s - %s)", icd10_code, diagnosis_title)
+    logger.info("=" * 60)
+
+    # 1. Retrieval Kandidat ICD-9 dari master CSV
+    t_ret = time.time()
+    candidates = retrieve_icd9_candidates(
+        icd10_code=icd10_code,
+        diagnosis_title=diagnosis_title,
+        subjective=subjective,
+        objective=objective,
+        plan=plan,
+        top_k=20,
+    )
+    timing["retrieval_ms"] = round((time.time() - t_ret) * 1000, 1)
+
+    # Format detail kandidat untuk prompt LLM
+    candidates_lines: list[str] = []
+    for idx, c in enumerate(candidates[:15]):
+        candidates_lines.append(f"[{idx+1}] Kode {c['code']} - {c['display']} (Score: {c['retrieval_score']})")
+    candidates_detail = "\n".join(candidates_lines)
+
+    # 2. Grounded Clinical Reasoning via LLM
+    t_gen = time.time()
+    llm_success = False
+    procedures_result: list[dict] = []
+    recommended_plan_result: Optional[str] = None
+
+    if ai_client is not None and candidates:
+        try:
+            from backend.prompts import ICD9_GROUNDED_REASONING_PROMPT
+
+            prompt = ICD9_GROUNDED_REASONING_PROMPT.format(
+                icd10_code=icd10_code,
+                diagnosis_title=diagnosis_title,
+                subjective=subjective or "Keluhan sesuai anamnesis",
+                objective=objective or "Pemeriksaan fisik sesuai temuan dokter",
+                plan=plan or "Tata laksana klinis standar",
+                candidates_detail=candidates_detail,
+            )
+
+            completion = ai_client.chat.completions.create(
+                model=model_name or "gemini-2.5-flash",
+                temperature=0,
+                response_format={"type": "json_object"},
+                messages=[
+                    {
+                        "role": "system",
+                        "content": (
+                            "Anda adalah asisten koding tindakan ICD-9-CM dan Clinical Decision Support. "
+                            "Patuhi aturan koding BPJS. Output WAJIB berupa JSON valid."
+                        ),
+                    },
+                    {"role": "user", "content": prompt},
+                ],
+            )
+
+            raw_json = json.loads(completion.choices[0].message.content or "{}")
+            procedures_result = raw_json.get("procedures", [])
+            recommended_plan_result = raw_json.get("recommended_plan")
+
+            if procedures_result and len(procedures_result) >= 3:
+                llm_success = True
+                logger.info(
+                    "Langkah 2 (LLM Reasoning ICD-9) sukses: %d prosedur di-generate.",
+                    len(procedures_result),
+                )
+        except Exception as exc:
+            logger.warning("LLM Reasoning ICD-9 gagal (%s), beralih ke deterministic fallback.", exc)
+
+    timing["generation_ms"] = round((time.time() - t_gen) * 1000, 1)
+
+    # 3. Fallback Deterministik Klinis jika LLM offline / kuota limit
+    if not llm_success:
+        from backend.main import ICD10_TO_ICD9_GUIDELINES
+
+        clean_c = icd10_code.upper().strip()
+        prefix3 = clean_c[:3] if len(clean_c) >= 3 else clean_c
+        matched = ICD10_TO_ICD9_GUIDELINES.get(clean_c) or ICD10_TO_ICD9_GUIDELINES.get(prefix3)
+
+        if matched:
+            procedures_result = matched.get("procedures", [])
+            recommended_plan_result = matched.get("guideline_plan")
+        else:
+            # Bangun prosedur dari kandidat retrieval teratas
+            procedures_result = [
+                {
+                    "code": c["code"],
+                    "name": f"Prosedur {c['display']}",
+                    "name_en": c["display"],
+                    "category": "Evaluasi & Tindakan Klinis" if idx == 0 else "Prosedur Medis",
+                    "indication": f"Prosedur penanganan klinis terindikasi untuk diagnosis {icd10_code}.",
+                    "is_selected": idx < 3,
+                }
+                for idx, c in enumerate(candidates[:5])
+            ]
+            recommended_plan_result = (
+                f"1. Farmakoterapi: Terapi simtomatik dan etiologis terarah untuk {icd10_code} ({diagnosis_title}).\n"
+                f"2. Edukasi: Istirahat cukup, menjaga hidrasi, dan modifikasi pola hidup sehat.\n"
+                f"3. Rencana Lanjutan: Kontrol ulang dalam 3-7 hari atau segera bila timbul tanda bahaya."
+            )
+
+    timing["total_ms"] = round((time.time() - t0) * 1000, 1)
+    logger.info("PIPELINE RAG ICD-9 SELESAI — Total: %.0f ms", timing["total_ms"])
+
+    return {
+        "procedures": procedures_result,
+        "recommended_plan": recommended_plan_result,
+        "retrieved_candidates": candidates[:10],
+        "timing": timing,
     }

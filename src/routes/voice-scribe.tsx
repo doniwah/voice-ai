@@ -667,7 +667,7 @@ function VoiceScribe() {
               )}
             >
               <Sparkles className="h-4 w-4" />
-              <span>AI SOAP &amp; Rekomendasi ICD-10</span>
+              <span>Asisten SOAP &amp; ICD-10</span>
             </button>
           </div>
 
@@ -680,12 +680,12 @@ function VoiceScribe() {
                   .join("\n");
                 setCarriedTranscript(formatted);
                 setActiveView("fastapi_assistant");
-                toast.info("Transkrip percakapan dimuat ke AI Assistant!");
+                toast.info("Transkrip percakapan dimuat ke Asisten SOAP!");
               }}
               className="inline-flex items-center gap-1.5 rounded-xl border border-[#0D6E68] bg-[#E5F5F3] px-3.5 py-1.5 text-xs font-bold text-[#0D6E68] hover:bg-[#d6f0ec] transition-colors cursor-pointer"
             >
               <Sparkles className="h-3.5 w-3.5" />
-              <span>Kirim Transkrip ke AI Assistant</span>
+              <span>Kirim ke Asisten SOAP</span>
             </button>
           )}
         </div>

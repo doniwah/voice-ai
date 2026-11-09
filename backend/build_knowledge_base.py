@@ -93,7 +93,7 @@ KNOWLEDGE_DATA = [
         "dagger_asterisk": None
     },
     {
-        "code": "E11.22",
+        "code": "E11.2",
         "title": "Type 2 diabetes mellitus with diabetic chronic kidney disease",
         "title_id": "Diabetes melitus tipe 2 dengan penyakit ginjal kronik diabetik",
         "chapter": "IV",
@@ -229,7 +229,7 @@ KNOWLEDGE_DATA = [
         "dagger_asterisk": None
     },
     {
-        "code": "J45.909",
+        "code": "J45.9",
         "title": "Unspecified asthma uncomplicated",
         "title_id": "Asma bronkial tanpa komplikasi",
         "chapter": "X",
@@ -273,8 +273,8 @@ KNOWLEDGE_DATA = [
         "can_be_primary": True,
         "includes": ["Gastritis NOS", "Gastric inflammation"],
         "excludes": ["Gastroenteritis (A09)", "Zollinger-Ellison syndrome (E16.4)"],
-        "clinical_keywords": ["gastritis", "sakit maag", "nyeri ulu hati", "perih lambung", "epigastrium nyeri tekan", "mual perih", "kembung begah", "telat makan perih", "antasida", "omeprazole"],
-        "synonyms_id": ["sakit maag", "asam lambung perih", "radang lambung"],
+        "clinical_keywords": ["gastritis", "sakit maag", "nyeri ulu hati", "perih lambung", "epigastrium nyeri tekan", "mual perih", "kembung begah", "telat makan perih", "antasida", "omeprazole", "sakit perut", "nyeri perut", "sakit lambung", "lambung perih"],
+        "synonyms_id": ["sakit maag", "asam lambung perih", "radang lambung", "sakit perut", "nyeri ulu hati"],
         "severity_indicators": ["Nyeri tekan regio epigastrium (+)", "Nyeri membaik setelah antasida atau makan"],
         "typical_vitals": ["TD normal", "Nadi normal", "Suhu afebris"],
         "dagger_asterisk": None
@@ -290,8 +290,8 @@ KNOWLEDGE_DATA = [
         "can_be_primary": True,
         "includes": ["Dyspepsia NOS", "Indigestion"],
         "excludes": ["Heartburn (R12)", "Dyspepsia from organic ulcer (K25-K27)"],
-        "clinical_keywords": ["dispepsia", "rasa penuh setelah makan", "cepat kenyang", "kembung", "begah sendawa", "rasa tidak nyaman perut atas", "domperidone", "sukralfat"],
-        "synonyms_id": ["gangguan pencernaan begah", "kembung masuk angin lambung"],
+        "clinical_keywords": ["dispepsia", "rasa penuh setelah makan", "cepat kenyang", "kembung", "begah sendawa", "rasa tidak nyaman perut atas", "domperidone", "sukralfat", "sakit perut", "nyeri perut", "sakit lambung", "nyeri ulu hati", "sakit perut kronis"],
+        "synonyms_id": ["gangguan pencernaan begah", "kembung masuk angin lambung", "sakit perut", "dispepsia"],
         "severity_indicators": ["Gejala persisten tanpa alarm signs (tanpa muntah darah, tanpa BB turun drastis)"],
         "typical_vitals": ["Tanda vital dalam batas normal"],
         "dagger_asterisk": None
@@ -365,6 +365,23 @@ KNOWLEDGE_DATA = [
         "dagger_asterisk": None
     },
     {
+        "code": "R10.4",
+        "title": "Other and unspecified abdominal pain",
+        "title_id": "Nyeri perut lainnya dan tidak spesifik (Sakit perut)",
+        "chapter": "XVIII",
+        "block": "R10-R19",
+        "is_fktp_144": True,
+        "is_symptom_code": True,
+        "can_be_primary": True,
+        "includes": ["Abdominal pain NOS", "Abdominal tenderness NOS", "Colic NOS", "Infantile colic"],
+        "excludes": ["Renal colic (N23)", "Dorsalgia (M54.-)", "Flatulence and eructation (R14)", "Appendicitis (K35-K37)"],
+        "clinical_keywords": ["sakit perut", "nyeri perut", "sakit perut melilit", "nyeri abdomen", "sakit perut hilang timbul", "kram perut", "mulas", "perut begah sakit", "abdominal pain", "nyeri perut bawah", "nyeri perut atas"],
+        "synonyms_id": ["sakit perut", "nyeri perut", "kram perut", "mulas melilit"],
+        "severity_indicators": ["Nyeri perut tanpa tanda defans muskular / akut abdomen", "Nyeri perut kronis atau hilang timbul"],
+        "typical_vitals": ["TD normal", "Nadi normal", "Suhu afebris"],
+        "dagger_asterisk": None
+    },
+    {
         "code": "R50.9",
         "title": "Fever unspecified",
         "title_id": "Demam tidak spesifik (Febris)",
@@ -399,7 +416,7 @@ KNOWLEDGE_DATA = [
         "dagger_asterisk": None
     },
     {
-        "code": "G43.909",
+        "code": "G43.9",
         "title": "Migraine unspecified not intractable",
         "title_id": "Migrain tidak spesifik",
         "chapter": "VI",
@@ -416,7 +433,7 @@ KNOWLEDGE_DATA = [
         "dagger_asterisk": None
     },
     {
-        "code": "G44.209",
+        "code": "G44.2",
         "title": "Tension-type headache unspecified",
         "title_id": "Sakit kepala tipe tegang (TTH)",
         "chapter": "VI",
@@ -467,9 +484,9 @@ KNOWLEDGE_DATA = [
         "dagger_asterisk": None
     },
     {
-        "code": "M25.50",
-        "title": "Pain in unspecified joint",
-        "title_id": "Nyeri sendi tidak spesifik (Artralgia)",
+        "code": "M25.5",
+        "title": "Pain in joint",
+        "title_id": "Nyeri sendi (Artralgia)",
         "chapter": "XIII",
         "block": "M20-M25",
         "is_fktp_144": True,
@@ -477,8 +494,8 @@ KNOWLEDGE_DATA = [
         "can_be_primary": True,
         "includes": ["Arthralgia NOS", "Joint pain"],
         "excludes": ["Gouty arthritis (M10.-)", "Osteoarthritis (M15-M19)"],
-        "clinical_keywords": ["artralgia", "nyeri sendi", "sendi kaku linu", "ngilu sendi lutut tangan", "sakit persendian"],
-        "synonyms_id": ["nyeri sendi", "ngilu persendian"],
+        "clinical_keywords": ["artralgia", "nyeri sendi", "sendi kaku linu", "ngilu sendi lutut tangan", "persendian ngilu"],
+        "synonyms_id": ["nyeri sendi", "ngilu persendian", "artralgia"],
         "severity_indicators": ["Nyeri gerak sendi tanpa deformitas berat"],
         "typical_vitals": ["Normal"],
         "dagger_asterisk": None
@@ -569,7 +586,7 @@ KNOWLEDGE_DATA = [
         "dagger_asterisk": None
     },
     {
-        "code": "I25.10",
+        "code": "I25.1",
         "title": "Atherosclerotic heart disease of native coronary artery",
         "title_id": "Penyakit jantung koroner (PJK) / aterosklerotik",
         "chapter": "IX",
@@ -637,9 +654,9 @@ KNOWLEDGE_DATA = [
         "dagger_asterisk": None
     },
     {
-        "code": "R11.10",
-        "title": "Vomiting unspecified",
-        "title_id": "Muntah simtomatik tidak spesifik",
+        "code": "R11",
+        "title": "Nausea and vomiting",
+        "title_id": "Mual dan muntah simtomatik",
         "chapter": "XVIII",
         "block": "R10-R19",
         "is_fktp_144": False,
@@ -705,7 +722,7 @@ KNOWLEDGE_DATA = [
         "dagger_asterisk": None
     },
     {
-        "code": "E05.90",
+        "code": "E05.9",
         "title": "Thyrotoxicosis without mentions of thyrotoxic crisis",
         "title_id": "Tirotoksikosis (Hipertiroid) tanpa krisis tiroid",
         "chapter": "IV",
@@ -739,7 +756,7 @@ KNOWLEDGE_DATA = [
         "dagger_asterisk": None
     },
     {
-        "code": "M19.90",
+        "code": "M19.9",
         "title": "Unspecified osteoarthritis unspecified site",
         "title_id": "Osteoartritis (pengapuran sendi)",
         "chapter": "XIII",
@@ -749,14 +766,14 @@ KNOWLEDGE_DATA = [
         "can_be_primary": True,
         "includes": ["Arthrosis NOS", "Degenerative joint disease", "Osteoarthrosis NOS"],
         "excludes": ["Spine osteoarthritis (M47.-)"],
-        "clinical_keywords": ["osteoartritis", "oa lutut", "pengapuran sendi", "krepitasi sendi", "kaku sendi pagi hari < 30 menit", "nyeri lutut saat berdiri naik tangga", "penyempitan celah sendi", "osteofit", "kondroitin glukosamin"],
+        "clinical_keywords": ["osteoartritis", "oa lutut", "pengapuran sendi", "krepitasi sendi", "kaku sendi pagi hari singkat", "nyeri lutut saat berdiri naik tangga", "penyempitan celah sendi", "osteofit", "kondroitin glukosamin"],
         "synonyms_id": ["pengapuran sendi", "oa lutut", "radang sendi usia tua"],
         "severity_indicators": ["Krepitasi saat digerakkan (+)", "Nyeri mekanik berhubungan dengan beban sendi"],
         "typical_vitals": ["Normal"],
         "dagger_asterisk": None
     },
     {
-        "code": "Z00.00",
+        "code": "Z00.0",
         "title": "Encounter for general adult medical examination",
         "title_id": "Pemeriksaan kesehatan umum dewasa (Medical Check Up)",
         "chapter": "XXI",

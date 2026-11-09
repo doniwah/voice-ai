@@ -224,7 +224,7 @@
     "dagger_asterisk": null
   },
   {
-    "code": "E11.22",
+    "code": "E11.2",
     "title": "Type 2 diabetes mellitus with diabetic chronic kidney disease",
     "title_id": "Diabetes melitus tipe 2 dengan penyakit ginjal kronik diabetik",
     "chapter": "IV",
@@ -560,7 +560,7 @@
     "dagger_asterisk": null
   },
   {
-    "code": "J45.909",
+    "code": "J45.9",
     "title": "Unspecified asthma uncomplicated",
     "title_id": "Asma bronkial tanpa komplikasi",
     "chapter": "X",
@@ -677,12 +677,18 @@
       "kembung begah",
       "telat makan perih",
       "antasida",
-      "omeprazole"
+      "omeprazole",
+      "sakit perut",
+      "nyeri perut",
+      "sakit lambung",
+      "lambung perih"
     ],
     "synonyms_id": [
       "sakit maag",
       "asam lambung perih",
-      "radang lambung"
+      "radang lambung",
+      "sakit perut",
+      "nyeri ulu hati"
     ],
     "severity_indicators": [
       "Nyeri tekan regio epigastrium (+)",
@@ -720,11 +726,18 @@
       "begah sendawa",
       "rasa tidak nyaman perut atas",
       "domperidone",
-      "sukralfat"
+      "sukralfat",
+      "sakit perut",
+      "nyeri perut",
+      "sakit lambung",
+      "nyeri ulu hati",
+      "sakit perut kronis"
     ],
     "synonyms_id": [
       "gangguan pencernaan begah",
-      "kembung masuk angin lambung"
+      "kembung masuk angin lambung",
+      "sakit perut",
+      "dispepsia"
     ],
     "severity_indicators": [
       "Gejala persisten tanpa alarm signs (tanpa muntah darah, tanpa BB turun drastis)"
@@ -915,6 +928,57 @@
     "dagger_asterisk": null
   },
   {
+    "code": "R10.4",
+    "title": "Other and unspecified abdominal pain",
+    "title_id": "Nyeri perut lainnya dan tidak spesifik (Sakit perut)",
+    "chapter": "XVIII",
+    "block": "R10-R19",
+    "is_fktp_144": true,
+    "is_symptom_code": true,
+    "can_be_primary": true,
+    "includes": [
+      "Abdominal pain NOS",
+      "Abdominal tenderness NOS",
+      "Colic NOS",
+      "Infantile colic"
+    ],
+    "excludes": [
+      "Renal colic (N23)",
+      "Dorsalgia (M54.-)",
+      "Flatulence and eructation (R14)",
+      "Appendicitis (K35-K37)"
+    ],
+    "clinical_keywords": [
+      "sakit perut",
+      "nyeri perut",
+      "sakit perut melilit",
+      "nyeri abdomen",
+      "sakit perut hilang timbul",
+      "kram perut",
+      "mulas",
+      "perut begah sakit",
+      "abdominal pain",
+      "nyeri perut bawah",
+      "nyeri perut atas"
+    ],
+    "synonyms_id": [
+      "sakit perut",
+      "nyeri perut",
+      "kram perut",
+      "mulas melilit"
+    ],
+    "severity_indicators": [
+      "Nyeri perut tanpa tanda defans muskular / akut abdomen",
+      "Nyeri perut kronis atau hilang timbul"
+    ],
+    "typical_vitals": [
+      "TD normal",
+      "Nadi normal",
+      "Suhu afebris"
+    ],
+    "dagger_asterisk": null
+  },
+  {
     "code": "R50.9",
     "title": "Fever unspecified",
     "title_id": "Demam tidak spesifik (Febris)",
@@ -992,7 +1056,7 @@
     "dagger_asterisk": null
   },
   {
-    "code": "G43.909",
+    "code": "G43.9",
     "title": "Migraine unspecified not intractable",
     "title_id": "Migrain tidak spesifik",
     "chapter": "VI",
@@ -1033,7 +1097,7 @@
     "dagger_asterisk": null
   },
   {
-    "code": "G44.209",
+    "code": "G44.2",
     "title": "Tension-type headache unspecified",
     "title_id": "Sakit kepala tipe tegang (TTH)",
     "chapter": "VI",
@@ -1151,9 +1215,9 @@
     "dagger_asterisk": null
   },
   {
-    "code": "M25.50",
-    "title": "Pain in unspecified joint",
-    "title_id": "Nyeri sendi tidak spesifik (Artralgia)",
+    "code": "M25.5",
+    "title": "Pain in joint",
+    "title_id": "Nyeri sendi (Artralgia)",
     "chapter": "XIII",
     "block": "M20-M25",
     "is_fktp_144": true,
@@ -1172,11 +1236,12 @@
       "nyeri sendi",
       "sendi kaku linu",
       "ngilu sendi lutut tangan",
-      "sakit persendian"
+      "persendian ngilu"
     ],
     "synonyms_id": [
       "nyeri sendi",
-      "ngilu persendian"
+      "ngilu persendian",
+      "artralgia"
     ],
     "severity_indicators": [
       "Nyeri gerak sendi tanpa deformitas berat"
@@ -1379,7 +1444,7 @@
     "dagger_asterisk": null
   },
   {
-    "code": "I25.10",
+    "code": "I25.1",
     "title": "Atherosclerotic heart disease of native coronary artery",
     "title_id": "Penyakit jantung koroner (PJK) / aterosklerotik",
     "chapter": "IX",
@@ -1532,9 +1597,9 @@
     "dagger_asterisk": null
   },
   {
-    "code": "R11.10",
-    "title": "Vomiting unspecified",
-    "title_id": "Muntah simtomatik tidak spesifik",
+    "code": "R11",
+    "title": "Nausea and vomiting",
+    "title_id": "Mual dan muntah simtomatik",
     "chapter": "XVIII",
     "block": "R10-R19",
     "is_fktp_144": false,
@@ -1686,7 +1751,7 @@
     "dagger_asterisk": null
   },
   {
-    "code": "E05.90",
+    "code": "E05.9",
     "title": "Thyrotoxicosis without mentions of thyrotoxic crisis",
     "title_id": "Tirotoksikosis (Hipertiroid) tanpa krisis tiroid",
     "chapter": "IV",
@@ -1770,7 +1835,7 @@
     "dagger_asterisk": null
   },
   {
-    "code": "M19.90",
+    "code": "M19.9",
     "title": "Unspecified osteoarthritis unspecified site",
     "title_id": "Osteoartritis (pengapuran sendi)",
     "chapter": "XIII",
@@ -1791,7 +1856,7 @@
       "oa lutut",
       "pengapuran sendi",
       "krepitasi sendi",
-      "kaku sendi pagi hari < 30 menit",
+      "kaku sendi pagi hari singkat",
       "nyeri lutut saat berdiri naik tangga",
       "penyempitan celah sendi",
       "osteofit",
@@ -1812,7 +1877,7 @@
     "dagger_asterisk": null
   },
   {
-    "code": "Z00.00",
+    "code": "Z00.0",
     "title": "Encounter for general adult medical examination",
     "title_id": "Pemeriksaan kesehatan umum dewasa (Medical Check Up)",
     "chapter": "XXI",
